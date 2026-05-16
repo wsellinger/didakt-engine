@@ -1,2 +1,2 @@
-# game-engine-didakt
+# Didakt
 A game engine written from scratch in C++ as a learning exercize
