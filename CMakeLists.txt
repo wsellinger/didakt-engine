@@ -14,7 +14,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SDL2)
 
-add_executable(Didakt src/main.cpp)
+add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Game.h" "src/Game.cpp")
 
 target_link_libraries(Didakt PRIVATE SDL2::SDL2 SDL2::SDL2main)
 

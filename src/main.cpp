@@ -1,8 +1,15 @@
-#include <SDL.h>
+#include "Game.h"
 
 int main(int argc, char* argvp[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Quit();
+    Game game;
+
+    bool initialize = game.Initialize();
+    if (!initialize)
+        return 1;
+
+    game.Run();
+    game.Shutdown();
+
     return 0;
 }
