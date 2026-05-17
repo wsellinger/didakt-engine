@@ -5,13 +5,18 @@
 
 bool Game::Initialize()
 {
+    //Load Config
+    _config = LoadConfig(Config::DEFAULT_PATH);
+
     //Init SDL
-    DECLSPEC int sdlInitResult = SDL_Init(SDL_INIT_VIDEO);
+    unsigned int sdlFlags = SDL_INIT_VIDEO;
+    DECLSPEC int sdlInitResult = SDL_Init(sdlFlags);
     if (sdlInitResult != 0)
         return false;
 
     //Init Window
-    bool isWindowInit = _window.Initialize("Didakt", 800, 600);
+    WindowConfig& windowConfig = _config.window;
+    bool isWindowInit = _window.Initialize(windowConfig.title, windowConfig.width, windowConfig.height);
     if (!isWindowInit)
         return false;
 
@@ -55,7 +60,8 @@ void Game::ProcessInput()
 void Game::Render()
 {
     SDL_Renderer* renderer = _window.GetSDLRenderer();
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    RenderColor& color = _config.renderer.clearColor;
+    SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 }

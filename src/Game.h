@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Window.h"
+#include "Config.h"
 
 class Game
 {
@@ -13,5 +15,7 @@ private:
     void Render();
 
     Window _window;
+    Config _config;
+
     bool _isRunning = false;
 };
