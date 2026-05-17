@@ -1,15 +1,15 @@
-#include "Game.h"
+#include "Engine.h"
 
 int main(int argc, char* argvp[])
 {
-    Game game;
+    Engine engine;
 
-    bool initialize = game.Initialize();
+    bool initialize = engine.Initialize();
     if (!initialize)
         return 1;
 
-    game.Run();
-    game.Shutdown();
+    engine.Run();
+    engine.Shutdown();
 
     return 0;
 }

@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "Config.h"
 
-class Game
+class Engine
 {
 public:
     bool Initialize();

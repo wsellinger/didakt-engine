@@ -1,9 +1,9 @@
-#include "Game.h"
+#include "Engine.h"
 #include <SDL.h>
 
 //=== Public ===
 
-bool Game::Initialize()
+bool Engine::Initialize()
 {
     //Load Config
     _config = LoadConfig(Config::DEFAULT_PATH);
@@ -25,7 +25,7 @@ bool Game::Initialize()
     return true;
 }
 
-void Game::Run()
+void Engine::Run()
 {
     while (_isRunning)
     {
@@ -34,7 +34,7 @@ void Game::Run()
     }
 }
 
-void Game::Shutdown()
+void Engine::Shutdown()
 {
     _window.Shutdown();
     SDL_Quit();
@@ -42,7 +42,7 @@ void Game::Shutdown()
 
 //=== Private ===
 
-void Game::ProcessInput()
+void Engine::ProcessInput()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -57,7 +57,7 @@ void Game::ProcessInput()
     }
 }
 
-void Game::Render()
+void Engine::Render()
 {
     SDL_Renderer* renderer = _window.GetSDLRenderer();
     RenderColor& color = _config.renderer.clearColor;
