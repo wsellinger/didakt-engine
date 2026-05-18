@@ -12,7 +12,10 @@ public:
 
 private:
     void ProcessInput();
+    void FixedUpdate(double deltaTime);
+    void FrameUpdate(double deltaTime);
     void Render();
+
 
     Window _window;
     Config _config;
@@ -20,21 +23,51 @@ private:
     bool _isRunning = false;
 };
 
+class TimeTracker
+{
+public:
+    TimeTracker(Uint64 initialTime, Uint64 frequency) :
+        _time(initialTime), _frequency(frequency) {}
+    
+    double GetDeltaTime(Uint64 currentTime);
+
+private:
+    static constexpr double MAX_DELTA_TIME = 0.05;
+
+    Uint64 _time = 0;
+    Uint64 _frequency = 0;
+};
+
+class FixedTimer
+{
+public:
+
+    void Increment(double deltaTime) { _accumulator += deltaTime; }
+    bool Update();
+
+    double GetTimestep() const { return FIXED_TIMESTEP; }
+
+private:
+    static constexpr double FIXED_TIMESTEP = 1.0 / 60.0;
+
+    double _accumulator = 0.0;
+};
+
 class FPSMeter
 {
 public:
     FPSMeter(Uint64 initialTime, Uint64 frequency) : 
-        _timer(initialTime), _frequency(frequency) {}
+        _time(initialTime), _frequency(frequency) {}
 
     bool Update(Uint64 currentTime);
     int GetFPS() const { return _fps; }
 
 private:
+    static const int UPDATE_TIME = 1;
+
     int _fps = 0;
 
-    Uint64 _timer = 0;
+    Uint64 _time = 0;
     Uint64 _frequency = 0;
     int _frames = 0;
-
-    static const int UPDATE_TIME = 1;
 };
