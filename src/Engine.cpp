@@ -1,5 +1,8 @@
 #include "Engine.h"
 #include <SDL.h>
+#include <string>
+
+using string = std::string;
 
 //=== Public ===
 
@@ -27,8 +30,26 @@ bool Engine::Initialize()
 
 void Engine::Run()
 {
+    //Init Time
+    Uint64 initialTime = SDL_GetPerformanceCounter();
+    Uint64 frequency = SDL_GetPerformanceFrequency();
+
+    FPSMeter fpsMeter(initialTime, frequency);
+
     while (_isRunning)
     {
+        //Update Time
+        Uint64 currentTime = SDL_GetPerformanceCounter();
+        double deltaTime = static_cast<double>(currentTime - initialTime) / frequency;
+        initialTime = currentTime;
+        
+        //Update FPS
+        if (fpsMeter.Update(currentTime))
+        {
+            string title = _config.window.title + " | FPS: " + std::to_string(fpsMeter.GetFPS());
+            SDL_SetWindowTitle(_window.GetSDLWindow(), title.c_str());
+        }
+
         ProcessInput();
         Render();
     }
@@ -64,4 +85,24 @@ void Engine::Render()
     SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
+}
+
+
+//=== FPS Meter ===
+
+bool FPSMeter::Update(Uint64 currentTime)
+{
+    _frames++;
+    double time = static_cast<double>(currentTime - _timer) / _frequency;
+
+    if (time >= UPDATE_TIME)
+    {
+        _fps = static_cast<int>(_frames / time);
+        _frames = 0;
+        _timer = currentTime;
+
+        return true;
+    }
+
+    return false;
 }
