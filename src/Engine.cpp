@@ -1,6 +1,15 @@
 #include "Engine.h"
-#include <SDL.h>
+
+#include "Config.h"
+
 #include <string>
+
+//#include <begin_code.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_stdinc.h>
+#include <SDL_timer.h>
+#include <SDL_video.h>
 
 using string = std::string;
 
@@ -12,16 +21,28 @@ bool Engine::Initialize()
     _config = LoadConfig(Config::DEFAULT_PATH);
 
     //Init SDL
-    unsigned int sdlFlags = SDL_INIT_VIDEO;
-    DECLSPEC int sdlInitResult = SDL_Init(sdlFlags);
-    if (sdlInitResult != 0)
-        return false;
+    {
+        unsigned int flags = SDL_INIT_VIDEO;
+        DECLSPEC int result = SDL_Init(flags);
+        if (result != 0)
+            return false;
+    }
+
+    //Init SDL Image
+    {
+        unsigned int flags = IMG_INIT_PNG || IMG_INIT_JPG;
+        int result = IMG_Init(flags);
+        if (result != flags)
+            return false;
+    }
 
     //Init Window
-    WindowConfig& windowConfig = _config.window;
-    bool isWindowInit = _window.Initialize(windowConfig.title, windowConfig.width, windowConfig.height);
-    if (!isWindowInit)
-        return false;
+    {
+        WindowConfig& config = _config.window;
+        bool isInit = _window.Initialize(config.title, config.width, config.height);
+        if (!isInit)
+            return false;
+    }
 
     _isRunning = true;
 
@@ -58,13 +79,16 @@ void Engine::Run()
         if (fpsMeter.Update(currentTime))
         {
             string title = _config.window.title + " | FPS: " + std::to_string(fpsMeter.GetFPS());
-            SDL_SetWindowTitle(_window.GetSDLWindow(), title.c_str());
+            SDL_SetWindowTitle(_window.GetWindow(), title.c_str());
         }
     }
 }
 
 void Engine::Shutdown()
 {
+    _assetManager.ClearAll();
+    IMG_Quit();
+
     _window.Shutdown();
     SDL_Quit();
 }
@@ -99,7 +123,7 @@ void Engine::FrameUpdate(double deltaTime)
 
 void Engine::Render()
 {
-    SDL_Renderer* renderer = _window.GetSDLRenderer();
+    SDL_Renderer* renderer = _window.GetRenderer();
     RenderColor& color = _config.renderer.clearColor;
     SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
     SDL_RenderClear(renderer);

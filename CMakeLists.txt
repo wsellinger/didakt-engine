@@ -16,6 +16,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL2)
 
+#SDL2_image
+FetchContent_Declare(
+    SDL2_image
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+    GIT_TAG        release-2.8.2
+)
+set(SDL2IMAGE_INSTALL OFF)
+FetchContent_MakeAvailable(SDL2_image)
+
 #nlohmann_json
 FetchContent_Declare(
     nlohmann_json
@@ -24,11 +33,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Engine.h" "src/Engine.cpp" "src/Config.h" "src/Config.cpp")
+add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Engine.h" "src/Engine.cpp" "src/Config.h" "src/Config.cpp" "src/AssetManager.h" "src/AssetManager.cpp")
 
 target_link_libraries(Didakt PRIVATE 
     SDL2::SDL2 
     SDL2::SDL2main
+    SDL2_image::SDL2_image
     nlohmann_json::nlohmann_json
 )
 
@@ -38,6 +48,9 @@ target_link_libraries(Didakt PRIVATE
 add_custom_command(TARGET Didakt POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:SDL2::SDL2>
+        $<TARGET_FILE_DIR:Didakt>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:SDL2_image::SDL2_image>
         $<TARGET_FILE_DIR:Didakt>
 )
 

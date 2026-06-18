@@ -1,11 +1,24 @@
 #pragma once
 
-#include "Window.h"
+#include "AssetManager.h"
 #include "Config.h"
+#include "Window.h"
+
+#include <SDL_stdinc.h>
+
+//Engine
 
 class Engine
 {
 public:
+    Engine() = default;
+    ~Engine() = default;
+
+    Engine(const Engine&) = delete;
+    Engine& operator=(const Engine&) = delete;
+    Engine(Engine&&) = delete;
+    Engine& operator=(Engine&&) = delete;
+
     bool Initialize();
     void Run();
     void Shutdown();
@@ -16,12 +29,15 @@ private:
     void FrameUpdate(double deltaTime);
     void Render();
 
-
     Window _window;
     Config _config;
 
+    AssetManager _assetManager;
+
     bool _isRunning = false;
 };
+
+//Utility Classes
 
 class TimeTracker
 {
