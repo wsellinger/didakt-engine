@@ -33,7 +33,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Engine.h" "src/Engine.cpp" "src/Config.h" "src/Config.cpp" "src/AssetManager.h" "src/AssetManager.cpp")
+add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Engine.h" "src/Engine.cpp" "src/Config.h" "src/Config.cpp" "src/AssetManager.h" "src/AssetManager.cpp" "src/Camera.h")
 
 target_link_libraries(Didakt PRIVATE 
     SDL2::SDL2 

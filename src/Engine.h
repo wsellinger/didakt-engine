@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetManager.h"
+#include "Camera.h"
 #include "Config.h"
 #include "Window.h"
 
@@ -29,8 +30,9 @@ private:
     void FrameUpdate(double deltaTime);
     void Render();
 
-    Window _window;
     Config _config;
+    Window _window;
+    Camera _camera;
 
     AssetManager _assetManager;
 
