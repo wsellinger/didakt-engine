@@ -4,6 +4,10 @@
 #include "Window.h"
 
 #include "../render/AssetManager.h"
+#include "../ecs/RegistryManager.h"
+
+#include "../ecs/systems/RenderSystem.h"
+#include "../ecs/systems/MovementSystem.h"
 
 #include "../render/Camera.h"
 #include "../render/Tilemap.h"
@@ -37,7 +41,11 @@ private:
     Window _window;
 
     AssetManager _assetManager{};
-    
+    RegistryManager _registryManager{};
+
+    RenderSystem _renderSystem;
+    MovementSystem _movementSystem;
+
     Camera _camera;
     Tilemap _tilemap;
 
@@ -51,7 +59,7 @@ class TimeTracker
 public:
     TimeTracker(Uint64 initialTime, Uint64 frequency) :
         _time(initialTime), _frequency(frequency) {}
-    
+
     double GetDeltaTime(Uint64 currentTime);
 
 private:
@@ -79,7 +87,7 @@ private:
 class FPSMeter
 {
 public:
-    FPSMeter(Uint64 initialTime, Uint64 frequency) : 
+    FPSMeter(Uint64 initialTime, Uint64 frequency) :
         _time(initialTime), _frequency(frequency) {}
 
     bool Update(Uint64 currentTime);

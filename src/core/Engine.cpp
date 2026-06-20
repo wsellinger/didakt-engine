@@ -5,7 +5,11 @@
 #include <string>
 
 #include <SDL.h>
+#include <SDL_events.h>
 #include <SDL_image.h>
+#include <SDL_keycode.h>
+#include <SDL_rect.h>
+#include <SDL_render.h>
 #include <SDL_stdinc.h>
 #include <SDL_timer.h>
 #include <SDL_video.h>
@@ -111,7 +115,7 @@ void Engine::ProcessInput()
 
 void Engine::FixedUpdate(double deltaTime)
 {
-    //TODO Implement
+    _movementSystem.Update(_registryManager.GetRegistry(), deltaTime);
 }
 
 void Engine::FrameUpdate(double deltaTime)
@@ -122,10 +126,14 @@ void Engine::FrameUpdate(double deltaTime)
 
 void Engine::Render()
 {
+    //Render Background
     SDL_Renderer* renderer = _window.GetRenderer();
     RenderColor& color = _config.renderer.clearColor;
     SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
     SDL_RenderClear(renderer);
+
+    _renderSystem.Render(_registryManager.GetRegistry(), renderer, _assetManager, _camera);
+
     SDL_RenderPresent(renderer);
 }
 
