@@ -1,6 +1,8 @@
-#include "Engine.h"
+#include "core/Engine.h"
 
-int main(int argc, char* argvp[])
+#include <SDL_main.h>
+
+int main(int  /*argc*/, char*  /*argvp*/[])
 {
     Engine engine;
 

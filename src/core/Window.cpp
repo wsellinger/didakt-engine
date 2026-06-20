@@ -1,5 +1,6 @@
 #include "Window.h"
-#include <SDL.h>
+#include <SDL_render.h>
+#include <SDL_video.h>
 
 bool Window::Initialize(const std::string& title, int width, int height)
 {

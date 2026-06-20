@@ -4,7 +4,7 @@ project(Didakt VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#Fetch
+#=== Fetch
 
 include(FetchContent)
 
@@ -33,8 +33,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-add_executable(Didakt src/main.cpp "src/Window.h" "src/Window.cpp" "src/Engine.h" "src/Engine.cpp" "src/Config.h" "src/Config.cpp" "src/AssetManager.h" "src/AssetManager.cpp" "src/Camera.h" "src/Tilemap.h" "src/Tilemap.cpp")
 
+#=== Source Files
+add_executable(Didakt src/main.cpp 
+    #Core
+    "src/core/Engine.h"     "src/core/Engine.cpp" 
+    "src/core/Window.h"     "src/core/Window.cpp" 
+    "src/core/Config.h"     "src/core/Config.cpp" 
+
+    #Render
+    "src/render/AssetManager.h" "src/render/AssetManager.cpp" 
+    "src/render/Tilemap.h"      "src/render/Tilemap.cpp" 
+    "src/render/Camera.h" 
+)
+
+#=== Links
 target_link_libraries(Didakt PRIVATE 
     SDL2::SDL2 
     SDL2::SDL2main
@@ -42,7 +55,7 @@ target_link_libraries(Didakt PRIVATE
     nlohmann_json::nlohmann_json
 )
 
-#Copy Files to Build Dir
+#=== Copy Files to Build Dir
 
 #SDL2 DLL
 add_custom_command(TARGET Didakt POST_BUILD

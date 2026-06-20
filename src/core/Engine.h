@@ -1,10 +1,12 @@
 #pragma once
 
-#include "AssetManager.h"
-#include "Camera.h"
 #include "Config.h"
-#include "Tilemap.h"
 #include "Window.h"
+
+#include "../render/AssetManager.h"
+
+#include "../render/Camera.h"
+#include "../render/Tilemap.h"
 
 #include <SDL_stdinc.h>
 
@@ -33,10 +35,11 @@ private:
 
     Config _config;
     Window _window;
+
+    AssetManager _assetManager{};
+    
     Camera _camera;
     Tilemap _tilemap;
-
-    AssetManager _assetManager;
 
     bool _isRunning = false;
 };

@@ -4,7 +4,6 @@
 
 #include <string>
 
-//#include <begin_code.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_stdinc.h>
