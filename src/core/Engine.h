@@ -10,7 +10,6 @@
 #include "../ecs/systems/MovementSystem.h"
 
 #include "../render/Camera.h"
-#include "../render/Tilemap.h"
 
 #include <SDL_stdinc.h>
 
@@ -47,7 +46,6 @@ private:
     MovementSystem _movementSystem;
 
     Camera _camera;
-    Tilemap _tilemap;
 
     bool _isRunning = false;
 };

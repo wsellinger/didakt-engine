@@ -58,23 +58,24 @@ add_executable(Didakt src/main.cpp
     "src/core/Config.h"     "src/core/Config.cpp" 
 
     #Render
-    "src/render/AssetManager.h" "src/render/AssetManager.cpp" 
-    "src/render/Tilemap.h"      "src/render/Tilemap.cpp" 
+    "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
     "src/render/Camera.h" 
 
     #Entity Component System
     "src/ecs/RegistryManager.h"    "src/ecs/RegistryManager.cpp"
 
     #-Components
-    "src/ecs/components/TransformComponent.h"
-    "src/ecs/components/SpriteComponent.h"
-    "src/ecs/components/RigidBodyComponent.h"
     "src/ecs/components/BoxColliderComponent.h"
+    "src/ecs/components/RenderComponent.h"
+    "src/ecs/components/RigidBodyComponent.h"
+    "src/ecs/components/SpriteSheetComponent.h"
+    "src/ecs/components/TilemapComponent.h"
+    "src/ecs/components/TransformComponent.h"
 
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
-)
+  )
 
 #=== Links
 target_link_libraries(Didakt PRIVATE 
