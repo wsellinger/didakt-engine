@@ -5,14 +5,7 @@
 #include <string>
 
 #include <SDL.h>
-#include <SDL_events.h>
 #include <SDL_image.h>
-#include <SDL_keycode.h>
-#include <SDL_rect.h>
-#include <SDL_render.h>
-#include <SDL_stdinc.h>
-#include <SDL_timer.h>
-#include <SDL_video.h>
 
 using string = std::string;
 
@@ -69,6 +62,12 @@ void Engine::Run()
         Uint64 currentTime = SDL_GetPerformanceCounter();
         double deltaTime = timeTracker.GetDeltaTime(currentTime);
         
+        //Events
+        ProcessEvents();
+
+        //Input
+        _inputManager.Update();
+
         //Fixed Update
         fixedTimer.Increment(deltaTime);
         while (fixedTimer.Update())
@@ -77,6 +76,9 @@ void Engine::Run()
         }
 
         FrameUpdate(deltaTime);
+
+        //Render
+        Render();
 
         //FPS Update
         if (fpsMeter.Update(currentTime))
@@ -98,7 +100,7 @@ void Engine::Shutdown()
 
 //=== Private ===
 
-void Engine::ProcessInput()
+void Engine::ProcessEvents()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -120,8 +122,7 @@ void Engine::FixedUpdate(double deltaTime)
 
 void Engine::FrameUpdate(double deltaTime)
 {
-    ProcessInput();
-    Render();
+
 }
 
 void Engine::Render()

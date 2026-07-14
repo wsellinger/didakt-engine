@@ -5,6 +5,7 @@
 
 #include "../render/AssetManager.h"
 #include "../ecs/RegistryManager.h"
+#include "../input/InputManager.h"
 
 #include "../ecs/systems/RenderSystem.h"
 #include "../ecs/systems/MovementSystem.h"
@@ -31,7 +32,7 @@ public:
     void Shutdown();
 
 private:
-    void ProcessInput();
+    void ProcessEvents();
     void FixedUpdate(double deltaTime);
     void FrameUpdate(double deltaTime);
     void Render();
@@ -41,6 +42,7 @@ private:
 
     AssetManager _assetManager{};
     RegistryManager _registryManager{};
+    InputManager _inputManager{};
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;

@@ -57,6 +57,9 @@ add_executable(Didakt src/main.cpp
     "src/core/Window.h"     "src/core/Window.cpp" 
     "src/core/Config.h"     "src/core/Config.cpp" 
 
+    #Input
+    "src/input/InputManager.h" "src/input/InputManager.cpp"
+
     #Render
     "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
     "src/render/Camera.h" 
@@ -75,7 +78,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
-  )
+)
 
 #=== Links
 target_link_libraries(Didakt PRIVATE 
