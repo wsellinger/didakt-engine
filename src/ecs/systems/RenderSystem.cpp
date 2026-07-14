@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cmath>
 #include <vector>
 
 #include <entt/entity/fwd.hpp>
@@ -76,17 +77,17 @@ void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& ren
     //Source
     SDL_Rect source{ sprite.x, sprite.y, sprite.width, sprite.height };
 
-    glm::vec2 worldPos{ transform.position.x, transform.position.y };
-    glm::vec2 screenPos = camera.WorldToScreen(worldPos);
-
     //Destination
-    SDL_Rect destination
-    {
-        static_cast<int>(screenPos.x),
-        static_cast<int>(screenPos.y),
-        static_cast<int>(sprite.width * transform.scale.x * camera.zoom),
-        static_cast<int>(sprite.height * transform.scale.y * camera.zoom)
-    };
+    glm::vec2 worldSize{ sprite.width * transform.scale.x, sprite.height * transform.scale.y };
+    glm::vec2 topLeft = camera.WorldToScreen(transform.position);
+    glm::vec2 bottomRight = camera.WorldToScreen(transform.position + worldSize);
+
+    int xtl = static_cast<int>(std::round(topLeft.x));
+    int ytl = static_cast<int>(std::round(topLeft.y));
+    int xbr = static_cast<int>(std::round(bottomRight.x));
+    int ybr = static_cast<int>(std::round(bottomRight.y));
+
+    SDL_Rect destination{ xtl, ytl, xbr - xtl, ybr - ytl };
 
     //Render
     SDL_RenderCopyEx(renderer, texture, &source, &destination, transform.rotation, nullptr, SDL_FLIP_NONE);
@@ -156,16 +157,18 @@ SDL_Rect RenderSystem::GetDestinationRect(size_t iRow, size_t iCol, const Tilema
     float fWidth = static_cast<float>(tilemap.tileWidth);
     float fHeight = static_cast<float>(tilemap.tileHeight);
 
-    glm::vec2 worldPos{ fCol * fWidth, fRow * fHeight };
-    glm::vec2 screenPos = camera.WorldToScreen(worldPos);
+    glm::vec2 topLeft = camera.WorldToScreen({ fCol * fWidth, fRow * fHeight });
+    glm::vec2 bottomRight = camera.WorldToScreen({ (fCol + 1) * fWidth, (fRow + 1) * fHeight });
 
-    float w = fWidth * camera.zoom;
-    float h = fHeight * camera.zoom;
+    int xtl = static_cast<int>(std::round(topLeft.x));
+    int ytl = static_cast<int>(std::round(topLeft.y));
+    int xbr = static_cast<int>(std::round(bottomRight.x));
+    int ybr = static_cast<int>(std::round(bottomRight.y));
 
-    SDL_assert(screenPos.x >= INT_MIN && screenPos.x <= INT_MAX);
-    SDL_assert(screenPos.y >= INT_MIN && screenPos.y <= INT_MAX);
-    SDL_assert(w >= INT_MIN && w <= INT_MAX);
-    SDL_assert(h >= INT_MIN && h <= INT_MAX);
+    SDL_assert(xtl >= INT_MIN && xtl <= INT_MAX);
+    SDL_assert(ytl >= INT_MIN && ytl <= INT_MAX);
+    SDL_assert(xbr >= INT_MIN && xbr <= INT_MAX);
+    SDL_assert(ybr >= INT_MIN && ybr <= INT_MAX);
 
-    return { static_cast<int>(screenPos.x), static_cast<int>(screenPos.y), static_cast<int>(w), static_cast<int>(h) };
+    return { xtl, ytl, xbr - xtl, ybr - ytl };
 }
