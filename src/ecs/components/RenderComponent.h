@@ -5,5 +5,5 @@
 struct RenderComponent
 {
     std::string textureId;
-    int zIndex;
+    int zIndex{};
 };

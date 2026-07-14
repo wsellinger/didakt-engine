@@ -19,6 +19,7 @@
 #include <SDL_rect.h>
 #include <SDL_render.h>
 
+#include <glm/ext/vector_float2.hpp>
 
 void RenderSystem::Render(entt::registry& registry, SDL_Renderer* renderer, AssetManager& assetManager, const Camera& camera)
 {
@@ -75,11 +76,14 @@ void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& ren
     //Source
     SDL_Rect source{ sprite.x, sprite.y, sprite.width, sprite.height };
 
+    glm::vec2 worldPos{ transform.position.x, transform.position.y };
+    glm::vec2 screenPos = camera.WorldToScreen(worldPos);
+
     //Destination
     SDL_Rect destination
     {
-        static_cast<int>((transform.position.x - camera.x) * camera.zoom),
-        static_cast<int>((transform.position.y - camera.y) * camera.zoom),
+        static_cast<int>(screenPos.x),
+        static_cast<int>(screenPos.y),
         static_cast<int>(sprite.width * transform.scale.x * camera.zoom),
         static_cast<int>(sprite.height * transform.scale.y * camera.zoom)
     };
@@ -152,15 +156,16 @@ SDL_Rect RenderSystem::GetDestinationRect(size_t iRow, size_t iCol, const Tilema
     float fWidth = static_cast<float>(tilemap.tileWidth);
     float fHeight = static_cast<float>(tilemap.tileHeight);
 
-    float x = (fCol * fWidth - camera.x) * camera.zoom;
-    float y = (fRow * fHeight - camera.y) * camera.zoom;
+    glm::vec2 worldPos{ fCol * fWidth, fRow * fHeight };
+    glm::vec2 screenPos = camera.WorldToScreen(worldPos);
+
     float w = fWidth * camera.zoom;
     float h = fHeight * camera.zoom;
 
-    SDL_assert(x >= INT_MIN && x <= INT_MAX);
-    SDL_assert(y >= INT_MIN && y <= INT_MAX);
+    SDL_assert(screenPos.x >= INT_MIN && screenPos.x <= INT_MAX);
+    SDL_assert(screenPos.y >= INT_MIN && screenPos.y <= INT_MAX);
     SDL_assert(w >= INT_MIN && w <= INT_MAX);
     SDL_assert(h >= INT_MIN && h <= INT_MAX);
 
-    return { static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h) };
+    return { static_cast<int>(screenPos.x), static_cast<int>(screenPos.y), static_cast<int>(w), static_cast<int>(h) };
 }
