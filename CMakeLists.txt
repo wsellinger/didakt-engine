@@ -50,7 +50,11 @@ FetchContent_Declare(
 set(GLM_BUILD_LIBRARY OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(glm)
 
-#=== Source Files
+#==========
+#=== Engine
+
+#=== Executable
+
 add_executable(Didakt src/main.cpp 
     #Core
     "src/core/Engine.h"     "src/core/Engine.cpp" 
@@ -80,7 +84,8 @@ add_executable(Didakt src/main.cpp
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
 )
 
-#=== Links
+#=== Libraries
+
 target_link_libraries(Didakt PRIVATE 
     SDL2::SDL2 
     SDL2::SDL2main
@@ -90,7 +95,7 @@ target_link_libraries(Didakt PRIVATE
     glm::glm
 )
 
-#=== Copy Files to Build Dir
+#=== Post Build
 
 #SDL2 DLL
 add_custom_command(TARGET Didakt POST_BUILD
@@ -112,3 +117,52 @@ add_custom_target(CopyConfig ALL
 )
 
 add_dependencies(Didakt CopyConfig)
+
+#=========
+#=== Tests
+
+#=== Fetch
+
+#Catch2
+FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v3.7.1
+)
+FetchContent_MakeAvailable(Catch2)
+enable_testing()
+
+include(CTest)
+include(Catch)
+
+#=== Executable
+
+add_executable(DidaktTests
+    "tests/CameraTests.cpp"
+)
+
+#=== Include Directories
+
+target_include_directories(DidaktTests PRIVATE 
+    ${CMAKE_SOURCE_DIR}/src
+)
+
+#=== Libraries
+
+target_link_libraries(DidaktTests PRIVATE 
+    Catch2::Catch2WithMain
+    glm::glm
+)
+
+catch_discover_tests(DidaktTests)
+
+#=== Post Build
+
+add_custom_command(TARGET DidaktTests POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Catch2::Catch2>
+        $<TARGET_FILE_DIR:DidaktTests>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Catch2::Catch2WithMain>
+        $<TARGET_FILE_DIR:DidaktTests>
+)
