@@ -82,7 +82,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
-)
+ )
 
 #=== Libraries
 
@@ -110,10 +110,9 @@ add_custom_command(TARGET Didakt POST_BUILD
 #config.json
 
 add_custom_target(CopyConfig ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/config/config.json
         $<TARGET_FILE_DIR:Didakt>/config/config.json
-    DEPENDS ${CMAKE_SOURCE_DIR}/config/config.json
 )
 
 add_dependencies(Didakt CopyConfig)
@@ -141,9 +140,11 @@ add_executable(DidaktTests
     #Tests
     "tests/render/CameraTests.cpp"
     "tests/ecs/MovementSystemTests.cpp"
+    "tests/core/ConfigTests.cpp"
 
     #Source    
     "src/ecs/systems/MovementSystem.cpp"
+    "src/core/Config.cpp"
 )
 
 #=== Include Directories
@@ -156,8 +157,10 @@ target_include_directories(DidaktTests PRIVATE
 
 target_link_libraries(DidaktTests PRIVATE 
     Catch2::Catch2WithMain
-    glm::glm
+    SDL2::SDL2 
+    nlohmann_json::nlohmann_json
     EnTT::EnTT
+    glm::glm
 )
 
 catch_discover_tests(DidaktTests)
