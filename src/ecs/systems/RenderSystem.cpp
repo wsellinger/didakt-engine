@@ -113,8 +113,8 @@ void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& re
         for (size_t iCol = 0; iCol < numCol; iCol++)
         {
             int id = row[iCol];
-            SDL_Rect source = RenderMath::GetTileSourceRect(id, tilemap);
-            SDL_Rect destination = RenderMath::GetTileDestinationRect(iRow, iCol, tilemap, camera);
+            SDL_Rect source = RenderMath::GetTileSourceRect(id, tilemap.tileWidth, tilemap.tileHeight, tilemap.sheetColumns);
+            SDL_Rect destination = RenderMath::GetTileDestinationRect(iRow, iCol, tilemap.tileWidth, tilemap.tileHeight, camera);
 
             SDL_RenderCopy(renderer, texture, &source, &destination);
         }
