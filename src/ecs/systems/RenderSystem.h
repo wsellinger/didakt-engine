@@ -47,7 +47,4 @@ private:
 
     static void RenderSprite(entt::entity entity, const RenderParameters& renderParameters);
     static void RenderTilemap(entt::entity entity, const RenderParameters& renderParameters);
-
-    static SDL_Rect GetSourceRect(int id, const TilemapComponent& tilemap);
-    static SDL_Rect GetDestinationRect(size_t iRow, size_t iCol, const TilemapComponent& tilemap, const Camera& camera);
 };

@@ -67,6 +67,7 @@ add_executable(Didakt src/main.cpp
     #Render
     "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
     "src/render/Camera.h" 
+    "src/render/RenderMath.h"   "src/render/RenderMath.cpp"
 
     #Entity Component System
     "src/ecs/RegistryManager.h"    "src/ecs/RegistryManager.cpp"
@@ -82,7 +83,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
- )
+)
 
 #=== Libraries
 
@@ -138,13 +139,15 @@ include(Catch)
 
 add_executable(DidaktTests
     #Tests
-    "tests/render/CameraTests.cpp"
-    "tests/ecs/MovementSystemTests.cpp"
     "tests/core/ConfigTests.cpp"
+    "tests/ecs/MovementSystemTests.cpp"
+    "tests/render/CameraTests.cpp"
+    "tests/render/RenderMathTests.cpp"
 
     #Source    
-    "src/ecs/systems/MovementSystem.cpp"
     "src/core/Config.cpp"
+    "src/ecs/systems/MovementSystem.cpp"
+    "src/render/RenderMath.cpp"
 )
 
 #=== Include Directories
