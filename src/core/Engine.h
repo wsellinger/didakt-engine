@@ -3,13 +3,15 @@
 #include "Config.h"
 #include "Window.h"
 
-#include "../render/AssetManager.h"
-#include "../ecs/RegistryManager.h"
-#include "../input/InputManager.h"
+#include "../drivers/sdl/SDLInputDriver.h"
 
+#include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
 #include "../ecs/systems/MovementSystem.h"
 
+#include "../input/InputManager.h"
+
+#include "../render/AssetManager.h"
 #include "../render/Camera.h"
 
 #include <SDL_stdinc.h>
@@ -37,12 +39,15 @@ private:
     void FrameUpdate(double deltaTime);
     void Render();
 
+    //Drivers
+    SDLInputDriver _inputDriver;
+
     Config _config;
     Window _window;
 
     AssetManager _assetManager{};
     RegistryManager _registryManager{};
-    InputManager _inputManager{};
+    InputManager _inputManager{ _inputDriver };
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;

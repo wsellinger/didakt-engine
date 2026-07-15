@@ -1,16 +1,17 @@
 #pragma once
 
-#include <array>
+#include "../drivers/interfaces/IInputDriver.h"
+#include "key.h"
+#include "MouseButton.h"
 
-#include <SDL_scancode.h>
-#include <SDL_stdinc.h>
+#include <array>
 
 #include <glm/ext/vector_float2.hpp>
 
 class InputManager
 {
 public:
-	InputManager() = default;
+	explicit InputManager(IInputDriver& driver) : _driver(driver) {}
     ~InputManager() = default;
 
     InputManager(const InputManager&) = delete;
@@ -20,29 +21,28 @@ public:
 
     void Update();
 
-    bool IsKeyDown(SDL_Scancode key) const;
-    bool IsKeyPressed(SDL_Scancode key) const;
-    bool IsKeyReleased(SDL_Scancode key) const;
+    bool IsKeyDown(Key key) const;
+    bool IsKeyPressed(Key key) const;
+    bool IsKeyReleased(Key key) const;
 
-    bool IsMouseButtonDown(Uint32 button) const;
-    bool IsMouseButtonPressed(Uint32 button) const;
-    bool IsMouseButtonReleased(Uint32 button) const;
+    bool IsMouseButtonDown(MouseButton button) const;
+    bool IsMouseButtonPressed(MouseButton button) const;
+    bool IsMouseButtonReleased(MouseButton button) const;
 
-    glm::vec2 GetMousePosition() const;
+    glm::vec2 GetMousePosition() const { return _currentMousePosition; }
 
 private:
 
+    IInputDriver& _driver;
+
     //Keyboard
 
-    std::array<Uint8, SDL_NUM_SCANCODES> _currentKeyStates{};
-    std::array<Uint8, SDL_NUM_SCANCODES> _previousKeyStates{};
+    std::array<bool, static_cast<size_t>(Key::Count)> _currentKeyStates{};
+    std::array<bool, static_cast<size_t>(Key::Count)> _previousKeyStates{};
     
     //Mouse
 
-    Uint32 _currentMouseButtonStates{};
-    Uint32 _previousMouseButtonStates{};
-    Sint32 _mouseX{};
-    Sint32 _mouseY{};
-
-    Uint32 GetMouseButtonState(Uint32 button, Uint32 states) const;
+    std::array<bool, static_cast<size_t>(MouseButton::Count)> _currentMouseButtonStates{};
+    std::array<bool, static_cast<size_t>(MouseButton::Count)> _previousMouseButtonStates{};
+    glm::vec2 _currentMousePosition{};    
 };

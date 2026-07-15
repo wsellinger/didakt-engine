@@ -61,8 +61,14 @@ add_executable(Didakt src/main.cpp
     "src/core/Window.h"     "src/core/Window.cpp" 
     "src/core/Config.h"     "src/core/Config.cpp" 
 
+    #Drivers
+    "src/drivers/interfaces/IInputDriver.h"
+    "src/drivers/sdl/SDLInputDriver.h"   "src/drivers/sdl/SDLInputDriver.cpp"
+
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
+    "src/input/Key.h" 
+    "src/input/MouseButton.h"
 
     #Render
     "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
@@ -141,12 +147,14 @@ add_executable(DidaktTests
     #Tests
     "tests/core/ConfigTests.cpp"
     "tests/ecs/MovementSystemTests.cpp"
+    "tests/input/InputManagerTests.cpp"
     "tests/render/CameraTests.cpp"
     "tests/render/RenderMathTests.cpp"
 
     #Source    
     "src/core/Config.cpp"
     "src/ecs/systems/MovementSystem.cpp"
+    "src/input/InputManager.cpp"
     "src/render/RenderMath.cpp"
 )
 

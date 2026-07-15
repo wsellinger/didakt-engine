@@ -16,54 +16,41 @@ void InputManager::Update()
     _previousMouseButtonStates = _currentMouseButtonStates;
 
     //Update States
-    const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
-    std::copy(keyboardState, keyboardState + SDL_NUM_SCANCODES, _currentKeyStates.begin());
-
-    _currentMouseButtonStates = SDL_GetMouseState(&_mouseX, &_mouseY);
+    _currentKeyStates = _driver.GetKeyStates();
+    _currentMouseButtonStates = _driver.GetMouseButtonStates();
+    _currentMousePosition = _driver.GetMousePosition();
 }
 
 //Keyboard
 
-bool InputManager::IsKeyDown(SDL_Scancode key) const
+bool InputManager::IsKeyDown(Key key) const
 {
-    return _currentKeyStates[key] != 0;
+    return _currentKeyStates[static_cast<size_t>(key)] != 0;
 }
 
-bool InputManager::IsKeyPressed(SDL_Scancode key) const
+bool InputManager::IsKeyPressed(Key key) const
 {    
-    return IsKeyDown(key) && _previousKeyStates[key] == 0;
+    return IsKeyDown(key) && _previousKeyStates[static_cast<size_t>(key)] == 0;
 }
 
-bool InputManager::IsKeyReleased(SDL_Scancode key) const
+bool InputManager::IsKeyReleased(Key key) const
 {    
-    return !IsKeyDown(key) && _previousKeyStates[key] != 0;
+    return !IsKeyDown(key) && _previousKeyStates[static_cast<size_t>(key)] != 0;
 }
 
 //Mouse
 
-bool InputManager::IsMouseButtonDown(Uint32 button) const
+bool InputManager::IsMouseButtonDown(MouseButton button) const
 {
-    return GetMouseButtonState(button, _currentMouseButtonStates) != 0;
+    return _currentMouseButtonStates[static_cast<size_t>(button)] != 0;
 }
 
-bool InputManager::IsMouseButtonPressed(Uint32 button) const
+bool InputManager::IsMouseButtonPressed(MouseButton button) const
 {
-    return IsMouseButtonDown(button) && GetMouseButtonState(button, _previousMouseButtonStates) == 0;
+    return IsMouseButtonDown(button) && _previousMouseButtonStates[static_cast<size_t>(button)] == 0;
 }
 
-bool InputManager::IsMouseButtonReleased(Uint32 button) const
+bool InputManager::IsMouseButtonReleased(MouseButton button) const
 {
-    return !IsMouseButtonDown(button) && GetMouseButtonState(button, _previousMouseButtonStates) != 0;
-}
-
-glm::vec2 InputManager::GetMousePosition() const
-{
-    return { static_cast<float>(_mouseX), static_cast<float>(_mouseY) };
-}
-
-//Private
-
-Uint32 InputManager::GetMouseButtonState(Uint32 button, Uint32 states) const
-{
-    return states & SDL_BUTTON(button);
+    return !IsMouseButtonDown(button) && _previousMouseButtonStates[static_cast<size_t>(button)] != 0;
 }
