@@ -138,7 +138,12 @@ include(Catch)
 #=== Executable
 
 add_executable(DidaktTests
-    "tests/CameraTests.cpp"
+    #Tests
+    "tests/render/CameraTests.cpp"
+    "tests/ecs/MovementSystemTests.cpp"
+
+    #Source    
+    "src/ecs/systems/MovementSystem.cpp"
 )
 
 #=== Include Directories
@@ -152,6 +157,7 @@ target_include_directories(DidaktTests PRIVATE
 target_link_libraries(DidaktTests PRIVATE 
     Catch2::Catch2WithMain
     glm::glm
+    EnTT::EnTT
 )
 
 catch_discover_tests(DidaktTests)
