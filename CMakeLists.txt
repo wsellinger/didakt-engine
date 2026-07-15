@@ -172,3 +172,5 @@ add_custom_command(TARGET DidaktTests POST_BUILD
         $<TARGET_FILE:Catch2::Catch2WithMain>
         $<TARGET_FILE_DIR:DidaktTests>
 )
+
+catch_discover_tests(DidaktTests)
