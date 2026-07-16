@@ -63,7 +63,10 @@ add_executable(Didakt src/main.cpp
 
     #Providers
     "src/providers/interfaces/IInputProvider.h"
+    "src/providers/interfaces/IAssetProvider.h"
+
     "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
+    "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
@@ -73,6 +76,7 @@ add_executable(Didakt src/main.cpp
     #Render
     "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
     "src/render/Camera.h" 
+    "src/render/TextureHandle.h"
     "src/render/RenderMath.h"   "src/render/RenderMath.cpp"
 
     #Entity Component System
@@ -89,6 +93,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
+
 )
 
 #=== Libraries
@@ -148,6 +153,7 @@ add_executable(DidaktTests
     "tests/core/ConfigTests.cpp"
     "tests/ecs/MovementSystemTests.cpp"
     "tests/input/InputManagerTests.cpp"
+    "tests/render/AssetManagerTests.cpp"
     "tests/render/CameraTests.cpp"
     "tests/render/RenderMathTests.cpp"
 
@@ -155,7 +161,9 @@ add_executable(DidaktTests
     "src/core/Config.cpp"
     "src/ecs/systems/MovementSystem.cpp"
     "src/input/InputManager.cpp"
+    "src/render/AssetManager.cpp"
     "src/render/RenderMath.cpp"
+
 )
 
 #=== Include Directories

@@ -40,6 +40,12 @@ bool Engine::Initialize()
             return false;
     }
 
+    //Init Providers
+    _assetProvider.Initialize(_window.GetRenderer());
+
+    //Init Managers
+    _assetManager.Initialize(_assetProvider);
+
     _isRunning = true;
 
     return true;
@@ -117,6 +123,7 @@ void Engine::ProcessEvents()
 
 void Engine::FixedUpdate(double deltaTime)
 {
+
     _movementSystem.Update(_registryManager.GetRegistry(), deltaTime);
 }
 

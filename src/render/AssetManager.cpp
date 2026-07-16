@@ -1,11 +1,5 @@
 #include "AssetManager.h"
 
-#include <string>
-
-#include <SDL_error.h>
-#include <SDL_image.h>
-#include <SDL_render.h>
-#include <SDL_surface.h>
 #include <SDL_log.h>
 
 using string = std::string;
@@ -15,40 +9,28 @@ AssetManager::~AssetManager()
     ClearAll();
 }
 
-void AssetManager::LoadTexture(const string& id, const string& filepath, SDL_Renderer* renderer)
+void AssetManager::LoadTexture(const string& id, const string& path)
 {
-    //Check if Loaded
-    if (_textures.count(id))
+    //Check Loaded
+    if (_handles.count(id))
+        return;
+    
+    //Load Texture
+    TextureHandle handle = _provider->LoadTexture(path);
+    if (!handle.IsValid())
         return;
 
-    //Get Surface
-    SDL_Surface* surface = IMG_Load(filepath.c_str());
-    if (!surface)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "AssetManager: failed to load %s - %s", filepath.c_str(), IMG_GetError());
-        return;
-    }
-
-    //Convert to Texture
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    if (!texture)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "AssetManager: failed to create texture for %s - %s", id.c_str(), SDL_GetError());
-        return;
-    }
-
-    //Store Texture
-    _textures[id] = texture;
+    //Store Handle
+    _handles[id] = handle;
 }
 
-SDL_Texture* AssetManager::GetTexture(const string& id) const
+TextureHandle AssetManager::GetTextureHandle(const string& id) const
 {
-    auto it = _textures.find(id);
-    if (it == _textures.end())
+    auto it = _handles.find(id);
+    if (it == _handles.end())
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "AssetManager: texture not found - %s", id.c_str());
-        return nullptr;
+        return TextureHandle{};
     }
 
     return it->second;
@@ -56,8 +38,8 @@ SDL_Texture* AssetManager::GetTexture(const string& id) const
 
 void AssetManager::ClearAll()
 {
-    for (auto& [id, texture] : _textures)
-        SDL_DestroyTexture(texture);
+    for (auto& [id, handle] : _handles)
+        _provider->DestroyTexture(handle);
 
-    _textures.clear();
+    _handles.clear();
 }

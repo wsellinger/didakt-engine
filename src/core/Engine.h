@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "Window.h"
 
+#include "../providers/sdl/SDLAssetProvider.h"
 #include "../providers/sdl/SDLInputProvider.h"
 
 #include "../ecs/RegistryManager.h"
@@ -40,12 +41,13 @@ private:
     void Render();
 
     //Providers
+    SDLAssetProvider _assetProvider;
     SDLInputProvider _inputProvider;
 
     Config _config;
     Window _window;
 
-    AssetManager _assetManager{};
+    AssetManager _assetManager;
     RegistryManager _registryManager{};
     InputManager _inputManager{ _inputProvider };
 

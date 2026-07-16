@@ -70,8 +70,9 @@ void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& ren
     const auto& transform = view.get<TransformComponent>(entity);
 
     //Texture
-    SDL_Texture* texture = assetManager.GetTexture(render.textureId);
-    SDL_assert(texture != nullptr);
+    TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
+    SDL_assert(handle.IsValid());
+    SDL_Texture* texture = static_cast<SDL_Texture*>(handle.handle);
 
     //Source
     SDL_Rect source{ sprite.x, sprite.y, sprite.width, sprite.height };
@@ -97,9 +98,10 @@ void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& re
     const auto& tilemap = view.get<TilemapComponent>(entity);
 
     //Texture
-    SDL_Texture* texture = assetManager.GetTexture(render.textureId);
-    SDL_assert(texture != nullptr);
-    
+    TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
+    SDL_assert(handle.IsValid());
+    SDL_Texture* texture = static_cast<SDL_Texture*>(handle.handle);
+
     //Grid
     const TileGrid& tiles = tilemap.tiles;
     size_t numRows = tiles.size();

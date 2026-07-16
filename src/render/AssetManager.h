@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../providers/interfaces/IAssetProvider.h"
+#include "texturehandle.h"
+
 #include <string>
 #include <unordered_map>
-
-#include <SDL_render.h>
 
 class AssetManager
 {
@@ -16,10 +17,14 @@ public:
     AssetManager(AssetManager&&) = delete;
     AssetManager& operator=(AssetManager&&) = delete;
 
-	void LoadTexture(const std::string& id, const std::string& filepath, SDL_Renderer* renderer);
-	SDL_Texture* GetTexture(const std::string& id) const;
+    void Initialize(IAssetProvider& provider) { _provider = &provider; }
+
+	void LoadTexture(const std::string& id, const std::string& path);
+	TextureHandle GetTextureHandle(const std::string& id) const;
 	void ClearAll();
 
 private:
-	std::unordered_map<std::string, SDL_Texture*> _textures;
+    IAssetProvider* _provider = nullptr;
+
+	std::unordered_map<std::string, TextureHandle> _handles;
 };
