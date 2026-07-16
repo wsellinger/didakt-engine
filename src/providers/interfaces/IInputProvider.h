@@ -7,10 +7,10 @@
 
 #include <glm/ext/vector_float2.hpp>
 
-class IInputDriver
+class IInputProvider
 {
 public:
-    virtual ~IInputDriver() = default;
+    virtual ~IInputProvider() = default;
     virtual std::array<bool, static_cast<size_t>(Key::Count)> GetKeyStates() const = 0; 
     virtual std::array<bool, static_cast<size_t>(MouseButton::Count)> GetMouseButtonStates() const = 0;
     virtual glm::vec2 GetMousePosition() const = 0;

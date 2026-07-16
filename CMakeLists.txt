@@ -61,9 +61,9 @@ add_executable(Didakt src/main.cpp
     "src/core/Window.h"     "src/core/Window.cpp" 
     "src/core/Config.h"     "src/core/Config.cpp" 
 
-    #Drivers
-    "src/drivers/interfaces/IInputDriver.h"
-    "src/drivers/sdl/SDLInputDriver.h"   "src/drivers/sdl/SDLInputDriver.cpp"
+    #Providers
+    "src/providers/interfaces/IInputProvider.h"
+    "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"

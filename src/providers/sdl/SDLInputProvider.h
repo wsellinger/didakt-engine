@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../interfaces/IInputDriver.h"
+#include "../interfaces/IInputProvider.h"
 
-class SDLInputDriver : public IInputDriver
+class SDLInputProvider : public IInputProvider
 {
 public:
 	std::array<bool, static_cast<size_t>(Key::Count)> GetKeyStates() const override;

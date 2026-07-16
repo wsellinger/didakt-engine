@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../drivers/interfaces/IInputDriver.h"
+#include "../providers/interfaces/IInputProvider.h"
 #include "key.h"
 #include "MouseButton.h"
 
@@ -11,7 +11,7 @@
 class InputManager
 {
 public:
-	explicit InputManager(IInputDriver& driver) : _driver(driver) {}
+	explicit InputManager(IInputProvider& provider) : _provider(provider) {}
     ~InputManager() = default;
 
     InputManager(const InputManager&) = delete;
@@ -33,7 +33,7 @@ public:
 
 private:
 
-    IInputDriver& _driver;
+    IInputProvider& _provider;
 
     //Keyboard
 

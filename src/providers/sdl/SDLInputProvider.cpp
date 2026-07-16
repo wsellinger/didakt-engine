@@ -1,4 +1,4 @@
-#include "SDLInputDriver.h"
+#include "SDLInputProvider.h"
 
 #include <SDL_assert.h>
 #include <SDL_keyboard.h>
@@ -88,7 +88,7 @@ namespace
     }
 }
 
-std::array<bool, static_cast<size_t>(Key::Count)> SDLInputDriver::GetKeyStates() const
+std::array<bool, static_cast<size_t>(Key::Count)> SDLInputProvider::GetKeyStates() const
 {
     std::array<bool, static_cast<size_t>(Key::Count)> states{};
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
@@ -102,7 +102,7 @@ std::array<bool, static_cast<size_t>(Key::Count)> SDLInputDriver::GetKeyStates()
     return states;
 }
 
-std::array<bool, static_cast<size_t>(MouseButton::Count)> SDLInputDriver::GetMouseButtonStates() const
+std::array<bool, static_cast<size_t>(MouseButton::Count)> SDLInputProvider::GetMouseButtonStates() const
 {
     std::array<bool, static_cast<size_t>(MouseButton::Count)> states{};
     int x, y;
@@ -117,7 +117,7 @@ std::array<bool, static_cast<size_t>(MouseButton::Count)> SDLInputDriver::GetMou
     return states;
 }
 
-glm::vec2 SDLInputDriver::GetMousePosition() const
+glm::vec2 SDLInputProvider::GetMousePosition() const
 {
     int x, y;
     SDL_GetMouseState(&x, &y);

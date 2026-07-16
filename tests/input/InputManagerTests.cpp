@@ -1,11 +1,11 @@
 #include "input/InputManager.h"
-#include "drivers/interfaces/IInputDriver.h"
+#include "providers/interfaces/IInputProvider.h"
 
 #include <catch2/catch_test_macros.hpp>
 
 namespace
 {
-    class MockInputDriver : public IInputDriver
+    class MockInputProvider : public IInputProvider
     {
     public:
         std::array<bool, static_cast<size_t>(Key::Count)> GetKeyStates() const override { return keyStates; }
@@ -20,13 +20,13 @@ namespace
 
 TEST_CASE("Input.InputManager.KeyPressedOnlyOnTransitionFrame", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
     inputManager.Update();
     REQUIRE_FALSE(inputManager.IsKeyPressed(Key::W));
 
-    driver.keyStates[static_cast<size_t>(Key::W)] = true;
+    provider.keyStates[static_cast<size_t>(Key::W)] = true;
     inputManager.Update();
     REQUIRE(inputManager.IsKeyPressed(Key::W));
 
@@ -36,10 +36,10 @@ TEST_CASE("Input.InputManager.KeyPressedOnlyOnTransitionFrame", "[InputManager]"
 
 TEST_CASE("Input.InputManager.KeyDownReflectsCurrentState", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
-    driver.keyStates[static_cast<size_t>(Key::A)] = true;
+    provider.keyStates[static_cast<size_t>(Key::A)] = true;
     inputManager.Update();
 
     REQUIRE(inputManager.IsKeyDown(Key::A));
@@ -48,13 +48,13 @@ TEST_CASE("Input.InputManager.KeyDownReflectsCurrentState", "[InputManager]")
 
 TEST_CASE("Input.InputManager.KeyReleasedOnlyOnTransitionFrame", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
-    driver.keyStates[static_cast<size_t>(Key::W)] = true;
+    provider.keyStates[static_cast<size_t>(Key::W)] = true;
     inputManager.Update(); // held
 
-    driver.keyStates[static_cast<size_t>(Key::W)] = false;
+    provider.keyStates[static_cast<size_t>(Key::W)] = false;
     inputManager.Update(); // just released
     REQUIRE(inputManager.IsKeyReleased(Key::W));
 
@@ -64,8 +64,8 @@ TEST_CASE("Input.InputManager.KeyReleasedOnlyOnTransitionFrame", "[InputManager]
 
 TEST_CASE("Input.InputManager.KeyNotDownBeforeFirstUpdate", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
     // No Update() called yet — should reflect the safe zero-initialized default
     REQUIRE_FALSE(inputManager.IsKeyDown(Key::W));
@@ -73,13 +73,13 @@ TEST_CASE("Input.InputManager.KeyNotDownBeforeFirstUpdate", "[InputManager]")
 
 TEST_CASE("Input.InputManager.MouseButtonPressedOnlyOnTransitionFrame", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
     inputManager.Update();
     REQUIRE_FALSE(inputManager.IsMouseButtonPressed(MouseButton::Left));
 
-    driver.mouseButtonStates[static_cast<size_t>(MouseButton::Left)] = true;
+    provider.mouseButtonStates[static_cast<size_t>(MouseButton::Left)] = true;
     inputManager.Update();
     REQUIRE(inputManager.IsMouseButtonPressed(MouseButton::Left));
 
@@ -89,13 +89,13 @@ TEST_CASE("Input.InputManager.MouseButtonPressedOnlyOnTransitionFrame", "[InputM
 
 TEST_CASE("Input.InputManager.MouseButtonReleasedOnlyOnTransitionFrame", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
-    driver.mouseButtonStates[static_cast<size_t>(MouseButton::Right)] = true;
+    provider.mouseButtonStates[static_cast<size_t>(MouseButton::Right)] = true;
     inputManager.Update();
 
-    driver.mouseButtonStates[static_cast<size_t>(MouseButton::Right)] = false;
+    provider.mouseButtonStates[static_cast<size_t>(MouseButton::Right)] = false;
     inputManager.Update();
     REQUIRE(inputManager.IsMouseButtonReleased(MouseButton::Right));
 
@@ -103,12 +103,12 @@ TEST_CASE("Input.InputManager.MouseButtonReleasedOnlyOnTransitionFrame", "[Input
     REQUIRE_FALSE(inputManager.IsMouseButtonReleased(MouseButton::Right));
 }
 
-TEST_CASE("Input.InputManager.GetMousePositionReflectsDriver", "[InputManager]")
+TEST_CASE("Input.InputManager.GetMousePositionReflectsProvider", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
-    driver.mousePosition = { 123.0f, 456.0f };
+    provider.mousePosition = { 123.0f, 456.0f };
     inputManager.Update();
 
     glm::vec2 position = inputManager.GetMousePosition();
@@ -118,10 +118,10 @@ TEST_CASE("Input.InputManager.GetMousePositionReflectsDriver", "[InputManager]")
 
 TEST_CASE("Input.InputManager.KeysAreIndependent", "[InputManager]")
 {
-    MockInputDriver driver;
-    InputManager inputManager(driver);
+    MockInputProvider provider;
+    InputManager inputManager(provider);
 
-    driver.keyStates[static_cast<size_t>(Key::W)] = true;
+    provider.keyStates[static_cast<size_t>(Key::W)] = true;
     inputManager.Update();
 
     REQUIRE(inputManager.IsKeyDown(Key::W));

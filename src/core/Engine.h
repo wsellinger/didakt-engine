@@ -3,7 +3,7 @@
 #include "Config.h"
 #include "Window.h"
 
-#include "../drivers/sdl/SDLInputDriver.h"
+#include "../providers/sdl/SDLInputProvider.h"
 
 #include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
@@ -39,15 +39,15 @@ private:
     void FrameUpdate(double deltaTime);
     void Render();
 
-    //Drivers
-    SDLInputDriver _inputDriver;
+    //Providers
+    SDLInputProvider _inputProvider;
 
     Config _config;
     Window _window;
 
     AssetManager _assetManager{};
     RegistryManager _registryManager{};
-    InputManager _inputManager{ _inputDriver };
+    InputManager _inputManager{ _inputProvider };
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;
