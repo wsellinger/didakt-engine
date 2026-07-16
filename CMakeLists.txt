@@ -62,11 +62,13 @@ add_executable(Didakt src/main.cpp
     "src/core/Config.h"     "src/core/Config.cpp" 
 
     #Providers
-    "src/providers/interfaces/IInputProvider.h"
     "src/providers/interfaces/IAssetProvider.h"
+    "src/providers/interfaces/IInputProvider.h"
+    "src/providers/interfaces/IRenderProvider.h"
 
-    "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
     "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
+    "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
+    "src/providers/sdl/SDLRenderProvider.h"  "src/providers/sdl/SDLRenderProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
@@ -76,8 +78,10 @@ add_executable(Didakt src/main.cpp
     #Render
     "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
     "src/render/Camera.h" 
-    "src/render/TextureHandle.h"
+    "src/render/RenderColor.h"
+    "src/render/RenderRect.h"
     "src/render/RenderMath.h"   "src/render/RenderMath.cpp"
+    "src/render/TextureHandle.h"
 
     #Entity Component System
     "src/ecs/RegistryManager.h"    "src/ecs/RegistryManager.cpp"
@@ -94,7 +98,7 @@ add_executable(Didakt src/main.cpp
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
 
-)
+ )
 
 #=== Libraries
 
@@ -151,16 +155,24 @@ include(Catch)
 add_executable(DidaktTests
     #Tests
     "tests/core/ConfigTests.cpp"
+
     "tests/ecs/MovementSystemTests.cpp"
+    "tests/ecs/RenderSystemTests.cpp"
+
     "tests/input/InputManagerTests.cpp"
+
     "tests/render/AssetManagerTests.cpp"
     "tests/render/CameraTests.cpp"
     "tests/render/RenderMathTests.cpp"
 
     #Source    
     "src/core/Config.cpp"
+
     "src/ecs/systems/MovementSystem.cpp"
+    "src/ecs/systems/RenderSystem.cpp"
+
     "src/input/InputManager.cpp"
+
     "src/render/AssetManager.cpp"
     "src/render/RenderMath.cpp"
 
@@ -181,8 +193,6 @@ target_link_libraries(DidaktTests PRIVATE
     EnTT::EnTT
     glm::glm
 )
-
-catch_discover_tests(DidaktTests)
 
 #=== Post Build
 

@@ -5,6 +5,7 @@
 
 #include "../providers/sdl/SDLAssetProvider.h"
 #include "../providers/sdl/SDLInputProvider.h"
+#include "../providers/sdl/SDLRenderProvider.h"
 
 #include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
@@ -43,6 +44,7 @@ private:
     //Providers
     SDLAssetProvider _assetProvider;
     SDLInputProvider _inputProvider;
+    SDLRenderProvider _renderProvider;
 
     Config _config;
     Window _window;

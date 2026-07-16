@@ -1,14 +1,8 @@
 #pragma once
 
-#include <string>
+#include "../render/RenderColor.h"
 
-struct RenderColor
-{
-    int R = 0;
-    int G = 0;
-    int B = 0;
-    int A = 0;
-};
+#include <string>
 
 struct WindowConfig
 {

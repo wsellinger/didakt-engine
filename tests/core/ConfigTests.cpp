@@ -36,10 +36,10 @@ namespace
         REQUIRE(config.window.width == defaults.window.width);
         REQUIRE(config.window.height == defaults.window.height);
 
-        REQUIRE(config.renderer.clearColor.R == defaults.renderer.clearColor.R);
-        REQUIRE(config.renderer.clearColor.G == defaults.renderer.clearColor.G);
-        REQUIRE(config.renderer.clearColor.B == defaults.renderer.clearColor.B);
-        REQUIRE(config.renderer.clearColor.A == defaults.renderer.clearColor.A);
+        REQUIRE(config.renderer.clearColor.r == defaults.renderer.clearColor.r);
+        REQUIRE(config.renderer.clearColor.g == defaults.renderer.clearColor.g);
+        REQUIRE(config.renderer.clearColor.b == defaults.renderer.clearColor.b);
+        REQUIRE(config.renderer.clearColor.a == defaults.renderer.clearColor.a);
     }
 }
 
@@ -62,10 +62,10 @@ TEST_CASE("Core.Config.LoadConfig_ParsesValidFile", "[Config]")
     REQUIRE(config.window.width == 1024);
     REQUIRE(config.window.height == 768);
 
-    REQUIRE(config.renderer.clearColor.R == 10);
-    REQUIRE(config.renderer.clearColor.G == 20);
-    REQUIRE(config.renderer.clearColor.B == 30);
-    REQUIRE(config.renderer.clearColor.A == 255);
+    REQUIRE(config.renderer.clearColor.r == 10);
+    REQUIRE(config.renderer.clearColor.g == 20);
+    REQUIRE(config.renderer.clearColor.b == 30);
+    REQUIRE(config.renderer.clearColor.a == 255);
 }
 
 TEST_CASE("Core.Config.LoadConfig_MissingFileReturnsDefaults", "[Config]")
@@ -112,10 +112,10 @@ TEST_CASE("Core.Config.LoadConfig_MissingSectionFallsBackToDefaults", "[Config]"
     REQUIRE(config.window.title == "Test Window");
 
     Config defaults{};
-    REQUIRE(config.renderer.clearColor.R == defaults.renderer.clearColor.R);
-    REQUIRE(config.renderer.clearColor.G == defaults.renderer.clearColor.G);
-    REQUIRE(config.renderer.clearColor.B == defaults.renderer.clearColor.B);
-    REQUIRE(config.renderer.clearColor.A == defaults.renderer.clearColor.A);
+    REQUIRE(config.renderer.clearColor.r == defaults.renderer.clearColor.r);
+    REQUIRE(config.renderer.clearColor.g == defaults.renderer.clearColor.g);
+    REQUIRE(config.renderer.clearColor.b == defaults.renderer.clearColor.b);
+    REQUIRE(config.renderer.clearColor.a == defaults.renderer.clearColor.a);
 }
 
 TEST_CASE("Core.Config.LoadConfig_MalformedJsonReturnsDefaults", "[Config]")
@@ -163,8 +163,8 @@ TEST_CASE("Core.Config.LoadConfig_MalformedClearColorArrayFallsBackToDefault", "
     REQUIRE(config.window.title == "Test Window"); // unaffected fields still parsed
 
     Config defaults{};
-    REQUIRE(config.renderer.clearColor.R == defaults.renderer.clearColor.R);
-    REQUIRE(config.renderer.clearColor.G == defaults.renderer.clearColor.G);
-    REQUIRE(config.renderer.clearColor.B == defaults.renderer.clearColor.B);
-    REQUIRE(config.renderer.clearColor.A == defaults.renderer.clearColor.A);
+    REQUIRE(config.renderer.clearColor.r == defaults.renderer.clearColor.r);
+    REQUIRE(config.renderer.clearColor.g == defaults.renderer.clearColor.g);
+    REQUIRE(config.renderer.clearColor.b == defaults.renderer.clearColor.b);
+    REQUIRE(config.renderer.clearColor.a == defaults.renderer.clearColor.a);
 }

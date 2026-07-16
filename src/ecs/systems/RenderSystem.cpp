@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 
+#include "../../providers/interfaces/IRenderProvider.h"
 #include "../../render/AssetManager.h"
 #include "../../render/Camera.h"
 #include "../../render/RenderMath.h"
@@ -16,12 +17,10 @@
 
 #include <SDL_assert.h>
 #include <SDL_log.h>
-#include <SDL_rect.h>
-#include <SDL_render.h>
 
 #include <glm/ext/vector_float2.hpp>
 
-void RenderSystem::Render(entt::registry& registry, SDL_Renderer* renderer, AssetManager& assetManager, const Camera& camera)
+void RenderSystem::Render(entt::registry& registry, IRenderProvider& renderProvider, AssetManager& assetManager, const Camera& camera)
 {
     //Get Commands
     std::vector<DrawCommand> drawCommands;
@@ -33,7 +32,7 @@ void RenderSystem::Render(entt::registry& registry, SDL_Renderer* renderer, Asse
         [](const DrawCommand& a, const DrawCommand& b) { return a.zIndex < b.zIndex; });
 
     //Render
-    RenderParameters renderParameters{ registry, renderer, assetManager, camera };
+    RenderParameters renderParameters{ registry, renderProvider, assetManager, camera };
     for (auto drawCommand : drawCommands)
     {
         switch (drawCommand.type)
@@ -61,7 +60,7 @@ void RenderSystem::AppendCommands(DrawType type, entt::registry& registry, std::
 
 void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& renderParameters)
 {
-    auto& [registry, renderer, assetManager, camera] = renderParameters;
+    auto& [registry, renderProvider, assetManager, camera] = renderParameters;
 
     //Get Components
     auto view = registry.view<RenderComponent, SpriteSheetComponent, TransformComponent>();
@@ -72,17 +71,16 @@ void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& ren
     //Texture
     TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
     SDL_assert(handle.IsValid());
-    SDL_Texture* texture = static_cast<SDL_Texture*>(handle.handle);
 
     //Source
-    SDL_Rect source{ sprite.x, sprite.y, sprite.width, sprite.height };
+    RenderRect source{ sprite.x, sprite.y, sprite.width, sprite.height };
 
     //Destination
     glm::vec2 worldSize{ sprite.width * transform.scale.x, sprite.height * transform.scale.y };
-    SDL_Rect destination = RenderMath::GetSpriteDestinationRect(transform.position, worldSize, camera);
+    RenderRect destination = RenderMath::GetSpriteDestinationRect(transform.position, worldSize, camera);
 
     //Render
-    SDL_RenderCopyEx(renderer, texture, &source, &destination, transform.rotation, nullptr, SDL_FLIP_NONE);
+    renderProvider.DrawTexture(handle, source, destination, transform.rotation);
 }
 
 using TileRow = std::vector<int>;
@@ -90,7 +88,7 @@ using TileGrid = std::vector<TileRow>;
 
 void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& renderParameters)
 {
-    auto& [registry, renderer, assetManager, camera] = renderParameters;
+    auto& [registry, renderProvider, assetManager, camera] = renderParameters;
 
     //Get Components
     auto view = registry.view<RenderComponent, TilemapComponent>();
@@ -100,7 +98,6 @@ void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& re
     //Texture
     TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
     SDL_assert(handle.IsValid());
-    SDL_Texture* texture = static_cast<SDL_Texture*>(handle.handle);
 
     //Grid
     const TileGrid& tiles = tilemap.tiles;
@@ -115,10 +112,10 @@ void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& re
         for (size_t iCol = 0; iCol < numCol; iCol++)
         {
             int id = row[iCol];
-            SDL_Rect source = RenderMath::GetTileSourceRect(id, tilemap.tileWidth, tilemap.tileHeight, tilemap.sheetColumns);
-            SDL_Rect destination = RenderMath::GetTileDestinationRect(iRow, iCol, tilemap.tileWidth, tilemap.tileHeight, camera);
+            RenderRect source = RenderMath::GetTileSourceRect(id, tilemap.tileWidth, tilemap.tileHeight, tilemap.sheetColumns);
+            RenderRect destination = RenderMath::GetTileDestinationRect(iRow, iCol, tilemap.tileWidth, tilemap.tileHeight, camera);
 
-            SDL_RenderCopy(renderer, texture, &source, &destination);
+            renderProvider.DrawTexture(handle, source, destination, 0.0);
         }
     }
 }

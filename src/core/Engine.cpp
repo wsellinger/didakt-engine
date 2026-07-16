@@ -26,7 +26,7 @@ bool Engine::Initialize()
 
     //Init SDL Image
     {
-        unsigned int flags = IMG_INIT_PNG || IMG_INIT_JPG;
+        unsigned int flags = IMG_INIT_PNG | IMG_INIT_JPG;
         int result = IMG_Init(flags);
         if (result != flags)
             return false;
@@ -42,6 +42,7 @@ bool Engine::Initialize()
 
     //Init Providers
     _assetProvider.Initialize(_window.GetRenderer());
+    _renderProvider.Initialize(_window.GetRenderer());
 
     //Init Managers
     _assetManager.Initialize(_assetProvider);
@@ -136,14 +137,10 @@ void Engine::FrameUpdate(double deltaTime)
 void Engine::Render()
 {
     //Render Background
-    SDL_Renderer* renderer = _window.GetRenderer();
     RenderColor& color = _config.renderer.clearColor;
-    SDL_SetRenderDrawColor(renderer, color.R, color.G, color.B, color.A);
-    SDL_RenderClear(renderer);
-
-    _renderSystem.Render(_registryManager.GetRegistry(), renderer, _assetManager, _camera);
-
-    SDL_RenderPresent(renderer);
+    _renderProvider.Clear(color);
+    _renderSystem.Render(_registryManager.GetRegistry(), _renderProvider, _assetManager, _camera);
+    _renderProvider.Present();
 }
 
 

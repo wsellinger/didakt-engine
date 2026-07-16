@@ -32,10 +32,10 @@ Config LoadConfig(const string& path)
         json clearColorJson = rendererJson.value("clearColor", json::array());
         if (clearColorJson.is_array() && clearColorJson.size() == 4)
         {
-            config.renderer.clearColor.R = clearColorJson[0].get<int>();
-            config.renderer.clearColor.G = clearColorJson[1].get<int>();
-            config.renderer.clearColor.B = clearColorJson[2].get<int>();
-            config.renderer.clearColor.A = clearColorJson[3].get<int>();
+            config.renderer.clearColor.r = clearColorJson[0].get<int>();
+            config.renderer.clearColor.g = clearColorJson[1].get<int>();
+            config.renderer.clearColor.b = clearColorJson[2].get<int>();
+            config.renderer.clearColor.a = clearColorJson[3].get<int>();
         }
     }
     catch (const json::exception& e)

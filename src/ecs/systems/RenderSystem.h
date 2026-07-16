@@ -1,12 +1,11 @@
 #pragma once
 
+#include "../../providers/interfaces/IRenderProvider.h"
 #include "../../render/Camera.h"
 
 #include "vector"
 
 #include <entt/entity/fwd.hpp>
-#include <SDL_render.h>
-#include <SDL_rect.h>
 
 class AssetManager;
 class TilemapComponent;
@@ -22,7 +21,7 @@ public:
     RenderSystem(RenderSystem&&) = delete;
     RenderSystem& operator=(RenderSystem&&) = delete;
 
-    void Render(entt::registry& registry, SDL_Renderer* renderer, AssetManager& assetManager, const Camera& camera);
+    void Render(entt::registry& registry, IRenderProvider& renderProvider, AssetManager& assetManager, const Camera& camera);
 
 private:
     enum class DrawType { Invalid, Sprite, Tilemap };
@@ -37,7 +36,7 @@ private:
     struct RenderParameters
     {
         entt::registry& registry;
-        SDL_Renderer* renderer{};
+        IRenderProvider& renderProvider;
         AssetManager& assetManager;
         const Camera& camera;
     };

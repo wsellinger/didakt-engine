@@ -7,7 +7,7 @@
 
 namespace RenderMath
 {
-    SDL_Rect GetTileSourceRect(int id, int width, int height, int columns)
+    RenderRect GetTileSourceRect(int id, int width, int height, int columns)
     {
         SDL_assert(id >= 0);
         SDL_assert(columns > 0);
@@ -23,7 +23,7 @@ namespace RenderMath
         };
     }
 
-    SDL_Rect GetTileDestinationRect(size_t iRow, size_t iCol, int width, int height, const Camera& camera)
+    RenderRect GetTileDestinationRect(size_t iRow, size_t iCol, int width, int height, const Camera& camera)
     {
         SDL_assert(iCol < INT_MAX);
         SDL_assert(iRow < INT_MAX);
@@ -52,7 +52,7 @@ namespace RenderMath
         return { xtl, ytl, xbr - xtl, ybr - ytl };
     }
 
-    SDL_Rect GetSpriteDestinationRect(glm::vec2 worldPosition, glm::vec2 worldSize, const Camera& camera)
+    RenderRect GetSpriteDestinationRect(glm::vec2 worldPosition, glm::vec2 worldSize, const Camera& camera)
     {
         glm::vec2 topLeft = camera.WorldToScreen(worldPosition);
         glm::vec2 bottomRight = camera.WorldToScreen(worldPosition + worldSize);
