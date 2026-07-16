@@ -45,6 +45,7 @@ bool Engine::Initialize()
 
     //Init Managers
     _assetManager.Initialize(_assetProvider);
+    _inputManager.Initialize(_inputProvider);
 
     _isRunning = true;
 

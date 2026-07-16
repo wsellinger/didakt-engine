@@ -11,13 +11,15 @@
 class InputManager
 {
 public:
-	explicit InputManager(IInputProvider& provider) : _provider(provider) {}
+    InputManager() = default;
     ~InputManager() = default;
 
     InputManager(const InputManager&) = delete;
     InputManager& operator=(const InputManager&) = delete;
     InputManager(InputManager&&) = delete;
     InputManager& operator=(InputManager&&) = delete;
+
+    void Initialize(IInputProvider& provider) { _provider = &provider; }
 
     void Update();
 
@@ -33,7 +35,7 @@ public:
 
 private:
 
-    IInputProvider& _provider;
+    IInputProvider* _provider;
 
     //Keyboard
 

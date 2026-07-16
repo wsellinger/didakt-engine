@@ -21,7 +21,8 @@ namespace
 TEST_CASE("Input.InputManager.KeyPressedOnlyOnTransitionFrame", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     inputManager.Update();
     REQUIRE_FALSE(inputManager.IsKeyPressed(Key::W));
@@ -37,7 +38,8 @@ TEST_CASE("Input.InputManager.KeyPressedOnlyOnTransitionFrame", "[InputManager]"
 TEST_CASE("Input.InputManager.KeyDownReflectsCurrentState", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     provider.keyStates[static_cast<size_t>(Key::A)] = true;
     inputManager.Update();
@@ -49,7 +51,8 @@ TEST_CASE("Input.InputManager.KeyDownReflectsCurrentState", "[InputManager]")
 TEST_CASE("Input.InputManager.KeyReleasedOnlyOnTransitionFrame", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     provider.keyStates[static_cast<size_t>(Key::W)] = true;
     inputManager.Update(); // held
@@ -65,7 +68,8 @@ TEST_CASE("Input.InputManager.KeyReleasedOnlyOnTransitionFrame", "[InputManager]
 TEST_CASE("Input.InputManager.KeyNotDownBeforeFirstUpdate", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     // No Update() called yet — should reflect the safe zero-initialized default
     REQUIRE_FALSE(inputManager.IsKeyDown(Key::W));
@@ -74,7 +78,8 @@ TEST_CASE("Input.InputManager.KeyNotDownBeforeFirstUpdate", "[InputManager]")
 TEST_CASE("Input.InputManager.MouseButtonPressedOnlyOnTransitionFrame", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     inputManager.Update();
     REQUIRE_FALSE(inputManager.IsMouseButtonPressed(MouseButton::Left));
@@ -90,7 +95,8 @@ TEST_CASE("Input.InputManager.MouseButtonPressedOnlyOnTransitionFrame", "[InputM
 TEST_CASE("Input.InputManager.MouseButtonReleasedOnlyOnTransitionFrame", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     provider.mouseButtonStates[static_cast<size_t>(MouseButton::Right)] = true;
     inputManager.Update();
@@ -106,7 +112,8 @@ TEST_CASE("Input.InputManager.MouseButtonReleasedOnlyOnTransitionFrame", "[Input
 TEST_CASE("Input.InputManager.GetMousePositionReflectsProvider", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     provider.mousePosition = { 123.0f, 456.0f };
     inputManager.Update();
@@ -119,7 +126,8 @@ TEST_CASE("Input.InputManager.GetMousePositionReflectsProvider", "[InputManager]
 TEST_CASE("Input.InputManager.KeysAreIndependent", "[InputManager]")
 {
     MockInputProvider provider;
-    InputManager inputManager(provider);
+    InputManager inputManager;
+    inputManager.Initialize(provider);
 
     provider.keyStates[static_cast<size_t>(Key::W)] = true;
     inputManager.Update();

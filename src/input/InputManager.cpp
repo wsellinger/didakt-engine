@@ -16,9 +16,9 @@ void InputManager::Update()
     _previousMouseButtonStates = _currentMouseButtonStates;
 
     //Update States
-    _currentKeyStates = _provider.GetKeyStates();
-    _currentMouseButtonStates = _provider.GetMouseButtonStates();
-    _currentMousePosition = _provider.GetMousePosition();
+    _currentKeyStates = _provider->GetKeyStates();
+    _currentMouseButtonStates = _provider->GetMouseButtonStates();
+    _currentMousePosition = _provider->GetMousePosition();
 }
 
 //Keyboard

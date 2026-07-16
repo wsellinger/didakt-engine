@@ -48,8 +48,8 @@ private:
     Window _window;
 
     AssetManager _assetManager;
+    InputManager _inputManager;
     RegistryManager _registryManager{};
-    InputManager _inputManager{ _inputProvider };
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;
