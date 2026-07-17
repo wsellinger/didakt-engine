@@ -125,7 +125,6 @@ void Engine::ProcessEvents()
 
 void Engine::FixedUpdate(double deltaTime)
 {
-
     _movementSystem.Update(_registryManager.GetRegistry(), deltaTime);
 }
 

@@ -24,22 +24,31 @@ class Engine
 {
 public:
     Engine() = default;
-    ~Engine() = default;
+    virtual ~Engine() = default;
 
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
     Engine(Engine&&) = delete;
     Engine& operator=(Engine&&) = delete;
 
-    bool Initialize();
+    virtual bool Initialize();
     void Run();
     void Shutdown();
 
+protected:
+    virtual void FixedUpdate(double deltaTime);
+    virtual void FrameUpdate(double deltaTime);
+    void Render();
+
+    AssetManager _assetManager;
+    InputManager _inputManager;
+    RegistryManager _registryManager{};
+    
+    Camera _camera;
+    Window _window;
+
 private:
     void ProcessEvents();
-    void FixedUpdate(double deltaTime);
-    void FrameUpdate(double deltaTime);
-    void Render();
 
     //Providers
     SDLAssetProvider _assetProvider;
@@ -47,16 +56,10 @@ private:
     SDLRenderProvider _renderProvider;
 
     Config _config;
-    Window _window;
 
-    AssetManager _assetManager;
-    InputManager _inputManager;
-    RegistryManager _registryManager{};
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;
-
-    Camera _camera;
 
     bool _isRunning = false;
 };
