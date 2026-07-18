@@ -57,18 +57,22 @@ FetchContent_MakeAvailable(glm)
 
 add_executable(Didakt src/main.cpp 
     #Core
-    "src/core/Engine.h"     "src/core/Engine.cpp" 
-    "src/core/Window.h"     "src/core/Window.cpp" 
-    "src/core/Config.h"     "src/core/Config.cpp" 
+    "src/core/Engine.h" "src/core/Engine.cpp" 
+    "src/core/Window.h" "src/core/Window.cpp" 
+    "src/core/Config.h" "src/core/Config.cpp" 
+    "src/core/LogLevel.h"
+    "src/core/Logger.h" "src/core/Logger.cpp"
 
     #Providers
     "src/providers/interfaces/IAssetProvider.h"
     "src/providers/interfaces/IInputProvider.h"
+    "src/providers/interfaces/ILoggingProvider.h"
     "src/providers/interfaces/IRenderProvider.h"
 
     "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
     "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
     "src/providers/sdl/SDLRenderProvider.h"  "src/providers/sdl/SDLRenderProvider.cpp"
+    "src/providers/sdl/SDLLoggingProvider.h" "src/providers/sdl/SDLLoggingProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
@@ -97,8 +101,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
-
- )
+)
 
 #=== Libraries
 
@@ -155,6 +158,7 @@ include(Catch)
 add_executable(DidaktTests
     #Tests
     "tests/core/ConfigTests.cpp"
+    "tests/core/LoggerTests.cpp"
 
     "tests/ecs/MovementSystemTests.cpp"
     "tests/ecs/RenderSystemTests.cpp"
@@ -167,6 +171,7 @@ add_executable(DidaktTests
 
     #Source    
     "src/core/Config.cpp"
+    "src/core/Logger.cpp"
 
     "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.cpp"

@@ -1,6 +1,7 @@
 #include "Engine.h"
 
 #include "Config.h"
+#include "Logger.h"
 
 #include <string>
 
@@ -13,6 +14,9 @@ using string = std::string;
 
 bool Engine::Initialize()
 {
+    //Init Logging
+    Logger::SetProvider(_loggingProvider);
+
     //Load Config
     _config = LoadConfig(Config::DEFAULT_PATH);
 

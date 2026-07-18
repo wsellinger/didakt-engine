@@ -5,6 +5,7 @@
 
 #include "../providers/sdl/SDLAssetProvider.h"
 #include "../providers/sdl/SDLInputProvider.h"
+#include "../providers/sdl/SDLLoggingProvider.h"
 #include "../providers/sdl/SDLRenderProvider.h"
 
 #include "../ecs/RegistryManager.h"
@@ -53,6 +54,7 @@ private:
     //Providers
     SDLAssetProvider _assetProvider;
     SDLInputProvider _inputProvider;
+    SDLLoggingProvider _loggingProvider;
     SDLRenderProvider _renderProvider;
 
     Config _config;

@@ -1,8 +1,9 @@
 #include "Config.h"
+
+#include "Logger.h"
+
 #include <nlohmann/json.hpp>
 #include <fstream>
-
-#include <SDL_log.h>
 
 using string = std::string;
 using ifstream = std::ifstream;
@@ -40,7 +41,7 @@ Config LoadConfig(const string& path)
     }
     catch (const json::exception& e)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Config: failed to parse '%s': %s", path.c_str(), e.what());
+        Logger::Log(LogLevel::Error, "Config: failed to parse '%s': %s", path.c_str(), e.what());
         return Config{};
     }
 

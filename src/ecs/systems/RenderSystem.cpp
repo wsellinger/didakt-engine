@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 
+#include "../../core/Logger.h"
 #include "../../providers/interfaces/IRenderProvider.h"
 #include "../../render/AssetManager.h"
 #include "../../render/Camera.h"
@@ -16,7 +17,6 @@
 #include <entt/entity/registry.hpp>
 
 #include <SDL_assert.h>
-#include <SDL_log.h>
 
 #include <glm/ext/vector_float2.hpp>
 
@@ -44,7 +44,7 @@ void RenderSystem::Render(entt::registry& registry, IRenderProvider& renderProvi
             RenderTilemap(drawCommand.entity, renderParameters);
             break;
         default:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "RenderSystem: unknown DrawType %d", static_cast<int>(drawCommand.type));
+            Logger::Log(LogLevel::Error, "RenderSystem: unknown DrawType %d", static_cast<int>(drawCommand.type));
             break;
         }
     }

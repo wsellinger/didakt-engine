@@ -1,6 +1,6 @@
 #include "AssetManager.h"
 
-#include <SDL_log.h>
+#include "../core/Logger.h"
 
 using string = std::string;
 
@@ -29,7 +29,7 @@ TextureHandle AssetManager::GetTextureHandle(const string& id) const
     auto it = _handles.find(id);
     if (it == _handles.end())
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "AssetManager: texture not found - %s", id.c_str());
+        Logger::Log(LogLevel::Error, "AssetManager: texture not found - %s", id.c_str());
         return TextureHandle{};
     }
 
