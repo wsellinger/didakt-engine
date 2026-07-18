@@ -68,11 +68,13 @@ add_executable(Didakt src/main.cpp
     "src/providers/interfaces/IInputProvider.h"
     "src/providers/interfaces/ILoggingProvider.h"
     "src/providers/interfaces/IRenderProvider.h"
+    "src/providers/interfaces/ISystemTimerProvider.h"
 
     "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
-    "src/providers/sdl/SDLInputProvider.h"   "src/providers/sdl/SDLInputProvider.cpp"
-    "src/providers/sdl/SDLRenderProvider.h"  "src/providers/sdl/SDLRenderProvider.cpp"
+    "src/providers/sdl/SDLInputProvider.h" "src/providers/sdl/SDLInputProvider.cpp"
+    "src/providers/sdl/SDLRenderProvider.h" "src/providers/sdl/SDLRenderProvider.cpp"
     "src/providers/sdl/SDLLoggingProvider.h" "src/providers/sdl/SDLLoggingProvider.cpp"
+    "src/providers/sdl/SDLSystemTimerProvider.h" "src/providers/sdl/SDLSystemTimerProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
@@ -101,7 +103,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
-)
+ )
 
 #=== Libraries
 

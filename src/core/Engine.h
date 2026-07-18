@@ -7,6 +7,7 @@
 #include "../providers/sdl/SDLInputProvider.h"
 #include "../providers/sdl/SDLLoggingProvider.h"
 #include "../providers/sdl/SDLRenderProvider.h"
+#include "../providers/sdl/SDLSystemTimerProvider.h"
 
 #include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
@@ -56,6 +57,7 @@ private:
     SDLInputProvider _inputProvider;
     SDLLoggingProvider _loggingProvider;
     SDLRenderProvider _renderProvider;
+    SDLSystemTimerProvider _systemTimerProvider;
 
     Config _config;
 

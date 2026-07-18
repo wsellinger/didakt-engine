@@ -60,8 +60,8 @@ bool Engine::Initialize()
 void Engine::Run()
 {
     //Init Time
-    Uint64 initialTime = SDL_GetPerformanceCounter();
-    Uint64 frequency = SDL_GetPerformanceFrequency();
+    Uint64 initialTime = _systemTimerProvider.GetTime();
+    Uint64 frequency = _systemTimerProvider.GetFrequency();
 
     TimeTracker timeTracker(initialTime, frequency);
     FixedTimer fixedTimer;
@@ -71,7 +71,7 @@ void Engine::Run()
     while (_isRunning)
     {
         //Update Time
-        Uint64 currentTime = SDL_GetPerformanceCounter();
+        Uint64 currentTime = _systemTimerProvider.GetTime();
         double deltaTime = timeTracker.GetDeltaTime(currentTime);
         
         //Events
