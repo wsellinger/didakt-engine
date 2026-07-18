@@ -60,8 +60,8 @@ bool Engine::Initialize()
 void Engine::Run()
 {
     //Init Time
-    Uint64 initialTime = _systemTimerProvider.GetTime();
-    Uint64 frequency = _systemTimerProvider.GetFrequency();
+    uint64_t  initialTime = _systemTimerProvider.GetTime();
+    uint64_t  frequency = _systemTimerProvider.GetFrequency();
 
     TimeTracker timeTracker(initialTime, frequency);
     FixedTimer fixedTimer;
@@ -71,7 +71,7 @@ void Engine::Run()
     while (_isRunning)
     {
         //Update Time
-        Uint64 currentTime = _systemTimerProvider.GetTime();
+        uint64_t  currentTime = _systemTimerProvider.GetTime();
         double deltaTime = timeTracker.GetDeltaTime(currentTime);
         
         //Events
@@ -149,7 +149,7 @@ void Engine::Render()
 
 //=== TimeTracker ===
 
-double TimeTracker::GetDeltaTime(Uint64 currentTime)
+double TimeTracker::GetDeltaTime(uint64_t  currentTime)
 {
     double deltaTime = static_cast<double>(currentTime - _time) / _frequency;
     _time = currentTime;
@@ -176,7 +176,7 @@ bool FixedTimer::Update()
 
 //=== FPSMeter ===
 
-bool FPSMeter::Update(Uint64 currentTime)
+bool FPSMeter::Update(uint64_t  currentTime)
 {
     _frames++;
     double time = static_cast<double>(currentTime - _time) / _frequency;

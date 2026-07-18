@@ -160,6 +160,7 @@ include(Catch)
 add_executable(DidaktTests
     #Tests
     "tests/core/ConfigTests.cpp"
+    "tests/core/EngineTimingTests.cpp"
     "tests/core/LoggerTests.cpp"
 
     "tests/ecs/MovementSystemTests.cpp"
@@ -171,9 +172,11 @@ add_executable(DidaktTests
     "tests/render/CameraTests.cpp"
     "tests/render/RenderMathTests.cpp"
 
-    #Source    
+    #Source
+    "src/core/Engine.cpp"
     "src/core/Config.cpp"
     "src/core/Logger.cpp"
+    "src/core/Window.cpp"
 
     "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.cpp"
@@ -196,6 +199,7 @@ target_include_directories(DidaktTests PRIVATE
 target_link_libraries(DidaktTests PRIVATE 
     Catch2::Catch2WithMain
     SDL2::SDL2 
+    SDL2_image::SDL2_image
     nlohmann_json::nlohmann_json
     EnTT::EnTT
     glm::glm

@@ -73,16 +73,16 @@ private:
 class TimeTracker
 {
 public:
-    TimeTracker(Uint64 initialTime, Uint64 frequency) :
+    TimeTracker(uint64_t  initialTime, uint64_t  frequency) :
         _time(initialTime), _frequency(frequency) {}
 
-    double GetDeltaTime(Uint64 currentTime);
+    double GetDeltaTime(uint64_t  currentTime);
 
 private:
     static constexpr double MAX_DELTA_TIME = 0.05;
 
-    Uint64 _time = 0;
-    Uint64 _frequency = 0;
+    uint64_t  _time = 0;
+    uint64_t  _frequency = 0;
 };
 
 class FixedTimer
@@ -103,10 +103,10 @@ private:
 class FPSMeter
 {
 public:
-    FPSMeter(Uint64 initialTime, Uint64 frequency) :
+    FPSMeter(uint64_t  initialTime, uint64_t  frequency) :
         _time(initialTime), _frequency(frequency) {}
 
-    bool Update(Uint64 currentTime);
+    bool Update(uint64_t  currentTime);
     int GetFPS() const { return _fps; }
 
 private:
@@ -114,7 +114,7 @@ private:
 
     int _fps = 0;
 
-    Uint64 _time = 0;
-    Uint64 _frequency = 0;
+    uint64_t  _time = 0;
+    uint64_t  _frequency = 0;
     int _frames = 0;
 };
