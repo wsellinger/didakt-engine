@@ -96,7 +96,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h" "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"   "src/ecs/systems/RenderSystem.cpp"
-)
+ "src/core/Assert.h")
 
 #=== Libraries
 

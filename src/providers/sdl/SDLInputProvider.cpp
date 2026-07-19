@@ -1,6 +1,7 @@
 #include "SDLInputProvider.h"
 
-#include <SDL_assert.h>
+#include "../../core/Assert.h"
+
 #include <SDL_keyboard.h>
 #include <SDL_mouse.h>
 #include <SDL_scancode.h>
@@ -82,7 +83,7 @@ namespace
         case MouseButton::Backward: return SDL_BUTTON_X2;
 
         default:
-            SDL_assert(false && "ToSDLButton called with unmapped MouseButton");
+            DIDAKT_ASSERT(false && "ToSDLButton called with unmapped MouseButton");
             return 0;
         }
     }

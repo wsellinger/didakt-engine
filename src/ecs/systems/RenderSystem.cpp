@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 
+#include "../../core/Assert.h"
 #include "../../core/Logger.h"
 #include "../../providers/interfaces/IRenderProvider.h"
 #include "../../render/AssetManager.h"
@@ -15,8 +16,6 @@
 
 #include <entt/entity/fwd.hpp>
 #include <entt/entity/registry.hpp>
-
-#include <SDL_assert.h>
 
 #include <glm/ext/vector_float2.hpp>
 
@@ -70,7 +69,7 @@ void RenderSystem::RenderSprite(entt::entity entity, const RenderParameters& ren
 
     //Texture
     TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
-    SDL_assert(handle.IsValid());
+    DIDAKT_ASSERT(handle.IsValid());
 
     //Source
     RenderRect source{ sprite.x, sprite.y, sprite.width, sprite.height };
@@ -97,7 +96,7 @@ void RenderSystem::RenderTilemap(entt::entity entity, const RenderParameters& re
 
     //Texture
     TextureHandle handle = assetManager.GetTextureHandle(render.textureId);
-    SDL_assert(handle.IsValid());
+    DIDAKT_ASSERT(handle.IsValid());
 
     //Grid
     const TileGrid& tiles = tilemap.tiles;

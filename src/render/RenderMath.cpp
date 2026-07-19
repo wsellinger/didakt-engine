@@ -1,6 +1,6 @@
 #include "RenderMath.h"
 
-#include <SDL_assert.h>
+#include "../core/Assert.h"
 
 #include <climits>
 #include <cmath>
@@ -9,10 +9,10 @@ namespace RenderMath
 {
     RenderRect GetTileSourceRect(int id, int width, int height, int columns)
     {
-        SDL_assert(id >= 0);
-        SDL_assert(columns > 0);
-        SDL_assert(width > 0);
-        SDL_assert(height > 0);
+        DIDAKT_ASSERT(id >= 0);
+        DIDAKT_ASSERT(columns > 0);
+        DIDAKT_ASSERT(width > 0);
+        DIDAKT_ASSERT(height > 0);
 
         return
         {
@@ -25,11 +25,11 @@ namespace RenderMath
 
     RenderRect GetTileDestinationRect(size_t iRow, size_t iCol, int width, int height, const Camera& camera)
     {
-        SDL_assert(iCol < INT_MAX);
-        SDL_assert(iRow < INT_MAX);
-        SDL_assert(width > 0);
-        SDL_assert(height > 0);
-        SDL_assert(camera.zoom > 0);
+        DIDAKT_ASSERT(iCol < INT_MAX);
+        DIDAKT_ASSERT(iRow < INT_MAX);
+        DIDAKT_ASSERT(width > 0);
+        DIDAKT_ASSERT(height > 0);
+        DIDAKT_ASSERT(camera.zoom > 0);
 
         float fCol = static_cast<float>(iCol);
         float fRow = static_cast<float>(iRow);
@@ -44,10 +44,10 @@ namespace RenderMath
         int xbr = static_cast<int>(std::round(bottomRight.x));
         int ybr = static_cast<int>(std::round(bottomRight.y));
 
-        SDL_assert(xtl >= INT_MIN && xtl <= INT_MAX);
-        SDL_assert(ytl >= INT_MIN && ytl <= INT_MAX);
-        SDL_assert(xbr >= INT_MIN && xbr <= INT_MAX);
-        SDL_assert(ybr >= INT_MIN && ybr <= INT_MAX);
+        DIDAKT_ASSERT(xtl >= INT_MIN && xtl <= INT_MAX);
+        DIDAKT_ASSERT(ytl >= INT_MIN && ytl <= INT_MAX);
+        DIDAKT_ASSERT(xbr >= INT_MIN && xbr <= INT_MAX);
+        DIDAKT_ASSERT(ybr >= INT_MIN && ybr <= INT_MAX);
 
         return { xtl, ytl, xbr - xtl, ybr - ytl };
     }

@@ -1,6 +1,6 @@
 #include "SDLRenderProvider.h"
 
-#include <SDL_assert.h>
+#include "../../core/Assert.h"
 
 namespace
 {
@@ -12,10 +12,10 @@ namespace
     SDL_Color ToSDLColor(RenderColor color)
     {
         const int Uint8_MAX = 255;
-        SDL_assert(color.r >= 0 && color.r <= Uint8_MAX);
-        SDL_assert(color.g >= 0 && color.g <= Uint8_MAX);
-        SDL_assert(color.b >= 0 && color.b <= Uint8_MAX);
-        SDL_assert(color.a >= 0 && color.a <= Uint8_MAX);
+        DIDAKT_ASSERT(color.r >= 0 && color.r <= Uint8_MAX);
+        DIDAKT_ASSERT(color.g >= 0 && color.g <= Uint8_MAX);
+        DIDAKT_ASSERT(color.b >= 0 && color.b <= Uint8_MAX);
+        DIDAKT_ASSERT(color.a >= 0 && color.a <= Uint8_MAX);
 
         return SDL_Color
         { 
@@ -29,7 +29,7 @@ namespace
 
 void SDLRenderProvider::Clear(RenderColor color)
 {
-    SDL_assert(_renderer != nullptr);
+    DIDAKT_ASSERT(_renderer != nullptr);
 
     SDL_Color sdlColor = ToSDLColor(color);
     SDL_SetRenderDrawColor(_renderer, sdlColor.r, sdlColor.g, sdlColor.b, sdlColor.a);
@@ -38,17 +38,17 @@ void SDLRenderProvider::Clear(RenderColor color)
 
 void SDLRenderProvider::Present()
 {
-    SDL_assert(_renderer != nullptr);
+    DIDAKT_ASSERT(_renderer != nullptr);
     SDL_RenderPresent(_renderer);
 }
 
 void SDLRenderProvider::DrawTexture(TextureHandle texture, const RenderRect& source, const RenderRect& destination, double rotation)
 {
-    SDL_assert(_renderer != nullptr);
-    SDL_assert(texture.IsValid());
+    DIDAKT_ASSERT(_renderer != nullptr);
+    DIDAKT_ASSERT(texture.IsValid());
 
     SDL_Texture* sdlTexture = static_cast<SDL_Texture*>(texture.handle);
-    SDL_assert(sdlTexture != nullptr);
+    DIDAKT_ASSERT(sdlTexture != nullptr);
 
     SDL_Rect sdlSource = ToSDLRect(source);
     SDL_Rect sdlDestination = ToSDLRect(destination);
