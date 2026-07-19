@@ -6,6 +6,7 @@
 #include "IInputProvider.h"
 #include "ILoggingProvider.h"
 #include "IRenderProvider.h"
+#include "ISystemEventProvider.h"
 #include "ISystemTimerProvider.h"
 #include "IWindowProvider.h"
 
@@ -21,6 +22,7 @@ public:
     virtual IInputProvider& GetInputProvider() = 0;
     virtual ILoggingProvider& GetLoggingProvider() = 0;
     virtual IRenderProvider& GetRenderProvider() = 0;
+    virtual ISystemEventProvider& GetSystemEventProvider() = 0;
     virtual ISystemTimerProvider& GetSystemTimerProvider() = 0;
     virtual IWindowProvider& GetWindowProvider() = 0;
 };

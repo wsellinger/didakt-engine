@@ -6,6 +6,7 @@
 #include "SDLInputProvider.h"
 #include "SDLLoggingProvider.h"
 #include "SDLRenderProvider.h"
+#include "SDLSystemEventProvider.h"
 #include "SDLSystemTimerProvider.h"
 #include "SDLWindowProvider.h"
 
@@ -22,6 +23,7 @@ public:
     IInputProvider& GetInputProvider() override { return _inputProvider; }
     ILoggingProvider& GetLoggingProvider() override { return _loggingProvider; }
     IRenderProvider& GetRenderProvider() override { return _renderProvider; }
+    ISystemEventProvider& GetSystemEventProvider() override { return _systemEventProvider; }
     ISystemTimerProvider& GetSystemTimerProvider() override { return _systemTimerProvider; }
     IWindowProvider& GetWindowProvider() override { return _windowProvider; }
 
@@ -30,6 +32,7 @@ private:
     SDLInputProvider _inputProvider;
     SDLLoggingProvider _loggingProvider;
     SDLRenderProvider _renderProvider;
+    SDLSystemEventProvider _systemEventProvider;
     SDLSystemTimerProvider _systemTimerProvider;
     SDLWindowProvider _windowProvider;
 

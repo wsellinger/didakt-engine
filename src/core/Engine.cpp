@@ -7,8 +7,6 @@
 
 #include <string>
 
-#include <SDL.h>
-
 using string = std::string;
 
 //=== Public ===
@@ -96,16 +94,12 @@ void Engine::Shutdown()
 
 void Engine::ProcessEvents()
 {
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-        //Quit
-        if (event.type == SDL_QUIT)
-            _isRunning = false;
+    ISystemEventProvider& eventProvider = _providerManager->GetSystemEventProvider();
+    eventProvider.PollEvents();
 
-        //Escape Key
-        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-            _isRunning = false;
+    if (eventProvider.QuitRequested())
+    {
+        _isRunning = false;
     }
 }
 

@@ -61,6 +61,7 @@ include(cmake/Providers.cmake)
 
 add_executable(Didakt src/main.cpp
     #Core
+    "src/core/Assert.h"
     "src/core/Engine.h"      "src/core/Engine.cpp"
     "src/core/Config.h"      "src/core/Config.cpp"
     "src/core/LogLevel.h"
@@ -96,7 +97,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h" "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"   "src/ecs/systems/RenderSystem.cpp"
- "src/core/Assert.h")
+   )
 
 #=== Libraries
 
@@ -187,8 +188,6 @@ target_link_libraries(DidaktTests PRIVATE
     glm::glm
 )
 
-catch_discover_tests(DidaktTests)
-
 #=== Post Build
 
 add_custom_command(TARGET DidaktTests POST_BUILD
@@ -199,3 +198,5 @@ add_custom_command(TARGET DidaktTests POST_BUILD
         $<TARGET_FILE:Catch2::Catch2WithMain>
         $<TARGET_FILE_DIR:DidaktTests>
 )
+
+catch_discover_tests(DidaktTests)

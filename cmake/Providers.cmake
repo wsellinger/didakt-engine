@@ -8,6 +8,7 @@ set(DIDAKT_PROVIDER_SOURCES
     "src/providers/interfaces/ILoggingProvider.h"
     "src/providers/interfaces/IProviderManager.h"
     "src/providers/interfaces/IRenderProvider.h"
+    "src/providers/interfaces/ISystemEventProvider.h"
     "src/providers/interfaces/ISystemTimerProvider.h"
     "src/providers/interfaces/IWindowProvider.h"
 
@@ -23,6 +24,7 @@ if(DIDAKT_USE_SDL)
         "src/providers/sdl/SDLLoggingProvider.h"     "src/providers/sdl/SDLLoggingProvider.cpp"
         "src/providers/sdl/SDLProviderManager.h"     "src/providers/sdl/SDLProviderManager.cpp"
         "src/providers/sdl/SDLRenderProvider.h"      "src/providers/sdl/SDLRenderProvider.cpp"
+        "src/providers/sdl/SDLSystemEventProvider.h" "src/providers/sdl/SDLSystemEventProvider.cpp"
         "src/providers/sdl/SDLSystemTimerProvider.h" "src/providers/sdl/SDLSystemTimerProvider.cpp"
         "src/providers/sdl/SDLWindowProvider.h"      "src/providers/sdl/SDLWindowProvider.cpp"
     )
