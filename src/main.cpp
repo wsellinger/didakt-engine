@@ -1,13 +1,10 @@
 #include "core/Engine.h"
 
-#include "../Demo/DemoEngine.hpp"
-
 #include <SDL_main.h>
 
 int main(int  /*argc*/, char*  /*argvp*/[])
 {
-    //Engine engine;
-    DemoEngine engine;
+    Engine engine;
 
     bool initialize = engine.Initialize();
     if (!initialize)
