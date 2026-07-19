@@ -58,7 +58,6 @@ FetchContent_MakeAvailable(glm)
 add_executable(Didakt src/main.cpp 
     #Core
     "src/core/Engine.h" "src/core/Engine.cpp" 
-    "src/core/Window.h" "src/core/Window.cpp" 
     "src/core/Config.h" "src/core/Config.cpp" 
     "src/core/LogLevel.h"
     "src/core/Logger.h" "src/core/Logger.cpp"
@@ -69,12 +68,14 @@ add_executable(Didakt src/main.cpp
     "src/providers/interfaces/ILoggingProvider.h"
     "src/providers/interfaces/IRenderProvider.h"
     "src/providers/interfaces/ISystemTimerProvider.h"
+    "src/providers/interfaces/IWindowProvider.h"
 
     "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
     "src/providers/sdl/SDLInputProvider.h" "src/providers/sdl/SDLInputProvider.cpp"
-    "src/providers/sdl/SDLRenderProvider.h" "src/providers/sdl/SDLRenderProvider.cpp"
     "src/providers/sdl/SDLLoggingProvider.h" "src/providers/sdl/SDLLoggingProvider.cpp"
+    "src/providers/sdl/SDLRenderProvider.h" "src/providers/sdl/SDLRenderProvider.cpp"
     "src/providers/sdl/SDLSystemTimerProvider.h" "src/providers/sdl/SDLSystemTimerProvider.cpp"
+    "src/providers/sdl/SDLWindowProvider.h" "src/providers/sdl/SDLWindowProvider.cpp"
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
@@ -176,7 +177,6 @@ add_executable(DidaktTests
     "src/core/Engine.cpp"
     "src/core/Config.cpp"
     "src/core/Logger.cpp"
-    "src/core/Window.cpp"
 
     "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.cpp"

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Config.h"
-#include "Window.h"
 
 #include "../providers/sdl/SDLAssetProvider.h"
 #include "../providers/sdl/SDLInputProvider.h"
 #include "../providers/sdl/SDLLoggingProvider.h"
 #include "../providers/sdl/SDLRenderProvider.h"
 #include "../providers/sdl/SDLSystemTimerProvider.h"
+#include "../providers/sdl/SDLWindowProvider.h"
 
 #include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
@@ -18,7 +18,6 @@
 #include "../render/AssetManager.h"
 #include "../render/Camera.h"
 
-#include <SDL_stdinc.h>
 
 //Engine
 
@@ -47,10 +46,13 @@ protected:
     RegistryManager _registryManager{};
     
     Camera _camera;
-    Window _window;
 
 private:
     void ProcessEvents();
+
+    //SDL
+    SDL_Window* _window = nullptr;
+    SDL_Renderer* _renderer = nullptr;
 
     //Providers
     SDLAssetProvider _assetProvider;
@@ -58,6 +60,7 @@ private:
     SDLLoggingProvider _loggingProvider;
     SDLRenderProvider _renderProvider;
     SDLSystemTimerProvider _systemTimerProvider;
+    SDLWindowProvider _windowProvider;
 
     Config _config;
 

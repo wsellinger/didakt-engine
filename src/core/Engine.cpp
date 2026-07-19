@@ -23,7 +23,7 @@ bool Engine::Initialize()
     //Init SDL
     {
         unsigned int flags = SDL_INIT_VIDEO;
-        DECLSPEC int result = SDL_Init(flags);
+        int result = SDL_Init(flags);
         if (result != 0)
             return false;
     }
@@ -36,17 +36,24 @@ bool Engine::Initialize()
             return false;
     }
 
+
     //Init Window
     {
-        WindowConfig& config = _config.window;
-        bool isInit = _window.Initialize(config.title, config.width, config.height);
-        if (!isInit)
+        auto& [title, width, height] = _config.window;
+        _window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
+        if (!_window)
             return false;
     }
 
+    //Init Renderer
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!_renderer)
+        return false;
+
     //Init Providers
-    _assetProvider.Initialize(_window.GetRenderer());
-    _renderProvider.Initialize(_window.GetRenderer());
+    _windowProvider.Initialize(_window);
+    _assetProvider.Initialize(_renderer);
+    _renderProvider.Initialize(_renderer);
 
     //Init Managers
     _assetManager.Initialize(_assetProvider);
@@ -96,7 +103,7 @@ void Engine::Run()
         if (fpsMeter.Update(currentTime))
         {
             string title = _config.window.title + " | FPS: " + std::to_string(fpsMeter.GetFPS());
-            SDL_SetWindowTitle(_window.GetWindow(), title.c_str());
+            _windowProvider.SetTitle(title);
         }
     }
 }
@@ -106,7 +113,12 @@ void Engine::Shutdown()
     _assetManager.ClearAll();
     IMG_Quit();
 
-    _window.Shutdown();
+    if (_renderer)
+        SDL_DestroyRenderer(_renderer);
+
+    if (_window)
+        SDL_DestroyWindow(_window);
+
     SDL_Quit();
 }
 
