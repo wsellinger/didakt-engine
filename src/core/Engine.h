@@ -2,12 +2,7 @@
 
 #include "Config.h"
 
-#include "../providers/sdl/SDLAssetProvider.h"
-#include "../providers/sdl/SDLInputProvider.h"
-#include "../providers/sdl/SDLLoggingProvider.h"
-#include "../providers/sdl/SDLRenderProvider.h"
-#include "../providers/sdl/SDLSystemTimerProvider.h"
-#include "../providers/sdl/SDLWindowProvider.h"
+#include "../providers/interfaces/IProviderManager.h"
 
 #include "../ecs/RegistryManager.h"
 #include "../ecs/systems/RenderSystem.h"
@@ -18,6 +13,7 @@
 #include "../render/AssetManager.h"
 #include "../render/Camera.h"
 
+#include <memory>
 
 //Engine
 
@@ -50,20 +46,9 @@ protected:
 private:
     void ProcessEvents();
 
-    //SDL
-    SDL_Window* _window = nullptr;
-    SDL_Renderer* _renderer = nullptr;
-
-    //Providers
-    SDLAssetProvider _assetProvider;
-    SDLInputProvider _inputProvider;
-    SDLLoggingProvider _loggingProvider;
-    SDLRenderProvider _renderProvider;
-    SDLSystemTimerProvider _systemTimerProvider;
-    SDLWindowProvider _windowProvider;
+    std::unique_ptr<IProviderManager> _providerManager;
 
     Config _config;
-
 
     RenderSystem _renderSystem;
     MovementSystem _movementSystem;

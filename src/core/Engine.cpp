@@ -3,10 +3,11 @@
 #include "Config.h"
 #include "Logger.h"
 
+#include "../providers/ProviderManagerFactory.h"
+
 #include <string>
 
 #include <SDL.h>
-#include <SDL_image.h>
 
 using string = std::string;
 
@@ -14,50 +15,23 @@ using string = std::string;
 
 bool Engine::Initialize()
 {
+    //Get Providers
+    _providerManager = CreateProviderManager();
+
     //Init Logging
-    Logger::SetProvider(_loggingProvider);
+    Logger::SetProvider(_providerManager->GetLoggingProvider());
 
     //Load Config
     _config = LoadConfig(Config::DEFAULT_PATH);
 
-    //Init SDL
-    {
-        unsigned int flags = SDL_INIT_VIDEO;
-        int result = SDL_Init(flags);
-        if (result != 0)
-            return false;
-    }
-
-    //Init SDL Image
-    {
-        unsigned int flags = IMG_INIT_PNG | IMG_INIT_JPG;
-        int result = IMG_Init(flags);
-        if (result != flags)
-            return false;
-    }
-
-
-    //Init Window
-    {
-        auto& [title, width, height] = _config.window;
-        _window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
-        if (!_window)
-            return false;
-    }
-
-    //Init Renderer
-    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!_renderer)
+    //Init Providers
+    bool providerInitialized = _providerManager->Initialize(_config);
+    if (!providerInitialized)
         return false;
 
-    //Init Providers
-    _windowProvider.Initialize(_window);
-    _assetProvider.Initialize(_renderer);
-    _renderProvider.Initialize(_renderer);
-
     //Init Managers
-    _assetManager.Initialize(_assetProvider);
-    _inputManager.Initialize(_inputProvider);
+    _assetManager.Initialize(_providerManager->GetAssetProvider());
+    _inputManager.Initialize(_providerManager->GetInputProvider());
 
     _isRunning = true;
 
@@ -67,8 +41,10 @@ bool Engine::Initialize()
 void Engine::Run()
 {
     //Init Time
-    uint64_t  initialTime = _systemTimerProvider.GetTime();
-    uint64_t  frequency = _systemTimerProvider.GetFrequency();
+    ISystemTimerProvider& timerProvider = _providerManager->GetSystemTimerProvider();
+
+    uint64_t  initialTime = timerProvider.GetTime();
+    uint64_t  frequency = timerProvider.GetFrequency();
 
     TimeTracker timeTracker(initialTime, frequency);
     FixedTimer fixedTimer;
@@ -78,7 +54,7 @@ void Engine::Run()
     while (_isRunning)
     {
         //Update Time
-        uint64_t  currentTime = _systemTimerProvider.GetTime();
+        uint64_t  currentTime = timerProvider.GetTime();
         double deltaTime = timeTracker.GetDeltaTime(currentTime);
         
         //Events
@@ -103,7 +79,7 @@ void Engine::Run()
         if (fpsMeter.Update(currentTime))
         {
             string title = _config.window.title + " | FPS: " + std::to_string(fpsMeter.GetFPS());
-            _windowProvider.SetTitle(title);
+            _providerManager->GetWindowProvider().SetTitle(title);
         }
     }
 }
@@ -111,15 +87,9 @@ void Engine::Run()
 void Engine::Shutdown()
 {
     _assetManager.ClearAll();
-    IMG_Quit();
 
-    if (_renderer)
-        SDL_DestroyRenderer(_renderer);
-
-    if (_window)
-        SDL_DestroyWindow(_window);
-
-    SDL_Quit();
+    //Shutdown Providers
+    _providerManager->Shutdown();
 }
 
 //=== Private ===
@@ -153,9 +123,11 @@ void Engine::Render()
 {
     //Render Background
     RenderColor& color = _config.renderer.clearColor;
-    _renderProvider.Clear(color);
-    _renderSystem.Render(_registryManager.GetRegistry(), _renderProvider, _assetManager, _camera);
-    _renderProvider.Present();
+    IRenderProvider& renderProvider = _providerManager->GetRenderProvider();
+
+    renderProvider.Clear(color);
+    _renderSystem.Render(_registryManager.GetRegistry(), renderProvider, _assetManager, _camera);
+    renderProvider.Present();
 }
 
 

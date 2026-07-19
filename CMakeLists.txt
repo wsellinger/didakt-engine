@@ -50,48 +50,40 @@ FetchContent_Declare(
 set(GLM_BUILD_LIBRARY OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(glm)
 
+#=== Providers
+
+include(cmake/Providers.cmake)
+
 #==========
 #=== Engine
 
 #=== Executable
 
-add_executable(Didakt src/main.cpp 
+add_executable(Didakt src/main.cpp
     #Core
-    "src/core/Engine.h" "src/core/Engine.cpp" 
-    "src/core/Config.h" "src/core/Config.cpp" 
+    "src/core/Engine.h"      "src/core/Engine.cpp"
+    "src/core/Config.h"      "src/core/Config.cpp"
     "src/core/LogLevel.h"
-    "src/core/Logger.h" "src/core/Logger.cpp"
+    "src/core/Logger.h"      "src/core/Logger.cpp"
 
     #Providers
-    "src/providers/interfaces/IAssetProvider.h"
-    "src/providers/interfaces/IInputProvider.h"
-    "src/providers/interfaces/ILoggingProvider.h"
-    "src/providers/interfaces/IRenderProvider.h"
-    "src/providers/interfaces/ISystemTimerProvider.h"
-    "src/providers/interfaces/IWindowProvider.h"
-
-    "src/providers/sdl/SDLAssetProvider.h" "src/providers/sdl/SDLAssetProvider.cpp"
-    "src/providers/sdl/SDLInputProvider.h" "src/providers/sdl/SDLInputProvider.cpp"
-    "src/providers/sdl/SDLLoggingProvider.h" "src/providers/sdl/SDLLoggingProvider.cpp"
-    "src/providers/sdl/SDLRenderProvider.h" "src/providers/sdl/SDLRenderProvider.cpp"
-    "src/providers/sdl/SDLSystemTimerProvider.h" "src/providers/sdl/SDLSystemTimerProvider.cpp"
-    "src/providers/sdl/SDLWindowProvider.h" "src/providers/sdl/SDLWindowProvider.cpp"
+    ${DIDAKT_PROVIDER_SOURCES}
 
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
-    "src/input/Key.h" 
+    "src/input/Key.h"
     "src/input/MouseButton.h"
 
     #Render
-    "src/render/AssetManager.h" "src/render/AssetManager.cpp"            
-    "src/render/Camera.h" 
+    "src/render/AssetManager.h" "src/render/AssetManager.cpp"
+    "src/render/Camera.h"
     "src/render/RenderColor.h"
     "src/render/RenderRect.h"
     "src/render/RenderMath.h"   "src/render/RenderMath.cpp"
     "src/render/TextureHandle.h"
 
     #Entity Component System
-    "src/ecs/RegistryManager.h"    "src/ecs/RegistryManager.cpp"
+    "src/ecs/RegistryManager.h" "src/ecs/RegistryManager.cpp"
 
     #-Components
     "src/ecs/components/BoxColliderComponent.h"
@@ -102,34 +94,22 @@ add_executable(Didakt src/main.cpp
     "src/ecs/components/TransformComponent.h"
 
     #-Systems
-    "src/ecs/systems/MovementSystem.h"  "src/ecs/systems/MovementSystem.cpp"
-    "src/ecs/systems/RenderSystem.h"    "src/ecs/systems/RenderSystem.cpp"
- )
+    "src/ecs/systems/MovementSystem.h" "src/ecs/systems/MovementSystem.cpp"
+    "src/ecs/systems/RenderSystem.h"   "src/ecs/systems/RenderSystem.cpp"
+)
 
 #=== Libraries
 
-target_link_libraries(Didakt PRIVATE 
-    SDL2::SDL2 
-    SDL2::SDL2main
-    SDL2_image::SDL2_image
+didakt_configure_provider_target(Didakt)
+didakt_link_sdl2main(Didakt)
+
+target_link_libraries(Didakt PRIVATE
     nlohmann_json::nlohmann_json
     EnTT::EnTT
     glm::glm
 )
 
 #=== Post Build
-
-#SDL2 DLL
-add_custom_command(TARGET Didakt POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:SDL2::SDL2>
-        $<TARGET_FILE_DIR:Didakt>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:SDL2_image::SDL2_image>
-        $<TARGET_FILE_DIR:Didakt>
-)
-
-#config.json
 
 add_custom_target(CopyConfig ALL
     COMMAND ${CMAKE_COMMAND} -E copy
@@ -173,9 +153,12 @@ add_executable(DidaktTests
     "tests/render/CameraTests.cpp"
     "tests/render/RenderMathTests.cpp"
 
+    #Providers
+    ${DIDAKT_PROVIDER_SOURCES}
+
     #Source
-    "src/core/Engine.cpp"
     "src/core/Config.cpp"
+    "src/core/Engine.cpp"
     "src/core/Logger.cpp"
 
     "src/ecs/systems/MovementSystem.cpp"
@@ -185,25 +168,26 @@ add_executable(DidaktTests
 
     "src/render/AssetManager.cpp"
     "src/render/RenderMath.cpp"
-
 )
 
 #=== Include Directories
 
-target_include_directories(DidaktTests PRIVATE 
+target_include_directories(DidaktTests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
 )
 
 #=== Libraries
 
-target_link_libraries(DidaktTests PRIVATE 
+didakt_configure_provider_target(DidaktTests)
+
+target_link_libraries(DidaktTests PRIVATE
     Catch2::Catch2WithMain
-    SDL2::SDL2 
-    SDL2_image::SDL2_image
     nlohmann_json::nlohmann_json
     EnTT::EnTT
     glm::glm
 )
+
+catch_discover_tests(DidaktTests)
 
 #=== Post Build
 
@@ -215,5 +199,3 @@ add_custom_command(TARGET DidaktTests POST_BUILD
         $<TARGET_FILE:Catch2::Catch2WithMain>
         $<TARGET_FILE_DIR:DidaktTests>
 )
-
-catch_discover_tests(DidaktTests)
