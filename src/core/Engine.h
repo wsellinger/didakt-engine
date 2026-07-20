@@ -8,6 +8,8 @@
 #include "../ecs/systems/RenderSystem.h"
 #include "../ecs/systems/MovementSystem.h"
 
+#include "../events/EventBus.h"
+
 #include "../input/InputManager.h"
 
 #include "../render/AssetManager.h"
@@ -36,6 +38,8 @@ protected:
     virtual void FixedUpdate(double deltaTime);
     virtual void FrameUpdate(double deltaTime);
     void Render();
+
+    EventBus _eventBus;
 
     AssetManager _assetManager;
     InputManager _inputManager;

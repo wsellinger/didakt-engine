@@ -70,6 +70,12 @@ add_executable(Didakt src/main.cpp
     #Providers
     ${DIDAKT_PROVIDER_SOURCES}
 
+    #Entity Component System
+    "src/ecs/RegistryManager.h" "src/ecs/RegistryManager.cpp"
+
+    #Events
+    "src/events/EventBus.h"
+
     #Input
     "src/input/InputManager.h" "src/input/InputManager.cpp"
     "src/input/Key.h"
@@ -83,8 +89,6 @@ add_executable(Didakt src/main.cpp
     "src/render/RenderMath.h"   "src/render/RenderMath.cpp"
     "src/render/TextureHandle.h"
 
-    #Entity Component System
-    "src/ecs/RegistryManager.h" "src/ecs/RegistryManager.cpp"
 
     #-Components
     "src/ecs/components/BoxColliderComponent.h"
@@ -97,7 +101,7 @@ add_executable(Didakt src/main.cpp
     #-Systems
     "src/ecs/systems/MovementSystem.h" "src/ecs/systems/MovementSystem.cpp"
     "src/ecs/systems/RenderSystem.h"   "src/ecs/systems/RenderSystem.cpp"
-   )
+)
 
 #=== Libraries
 
@@ -147,6 +151,8 @@ add_executable(DidaktTests
 
     "tests/ecs/MovementSystemTests.cpp"
     "tests/ecs/RenderSystemTests.cpp"
+
+    "tests/events/EventBusTests.cpp"
 
     "tests/input/InputManagerTests.cpp"
 
